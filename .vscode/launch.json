@@ -1,0 +1,24 @@
+{
+    // Use o IntelliSense para saber mais sobre os atributos possíveis.
+    // Focalizar para exibir as descrições dos atributos existentes.
+    // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "app_flutter",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "type": "dart",
+            "args": [
+                "--no-sound-null-safety"
+            ]
+        },
+        {
+            "name": "app_flutter (profile mode)",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        }
+    ]
+}
