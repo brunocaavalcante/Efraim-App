@@ -10,7 +10,6 @@ class AuthException implements Exception {
 
 class UserService extends ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   User? usuario;
@@ -33,7 +32,7 @@ class UserService extends ChangeNotifier {
     notifyListeners();
   }
 
-  registrar(UsuarioModel usuario) async {
+  registrar(Usuario usuario) async {
     try {
       if (usuario.senha != usuario.confirmSenha) {
         throw AuthException('As senhas são diferentes!');

@@ -121,7 +121,7 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
   registrar() async {
     setState(() => loading = true);
     try {
-      var usuario = UsuarioModel();
+      var usuario = Usuario();
       usuario.name = nome.text;
       usuario.telefone = telefone.text;
       usuario.email = email.text;

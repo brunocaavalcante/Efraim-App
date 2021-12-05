@@ -1,4 +1,4 @@
-class UsuarioModel {
+class Usuario {
   var name;
   var email;
   var senha;

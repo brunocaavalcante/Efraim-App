@@ -1,3 +1,5 @@
+import 'package:app_flutter/pages/membros/index_membro_page.dart';
+import 'package:app_flutter/pages/projeto/index_projeto_page.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
@@ -52,17 +54,25 @@ class _MainDrawerState extends State<MainDrawer> {
                   )
                 ])
               ])),
-          const ListTile(
-            leading: Icon(Icons.album_rounded),
-            title: Text("Projetos", style: TextStyle(fontSize: 18)),
-            onTap: null,
-          ),
-          const ListTile(
-            leading: Icon(Icons.people_alt),
-            title: Text("Membros", style: TextStyle(fontSize: 18)),
-            onTap: null,
-          ),
-          const ListTile(
+          ListTile(
+              leading: const Icon(Icons.album_rounded),
+              title: const Text("Projetos", style: TextStyle(fontSize: 18)),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const IndexProjetoPage()));
+              }),
+          ListTile(
+              leading: const Icon(Icons.people_alt),
+              title: const Text("Membros", style: TextStyle(fontSize: 18)),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const IndexMembroPage()));
+              }),
+          ListTile(
             leading: Icon(Icons.offline_pin_rounded),
             title: Text("Departamentos", style: TextStyle(fontSize: 18)),
             onTap: null,

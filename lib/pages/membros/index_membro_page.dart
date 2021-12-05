@@ -1,30 +1,19 @@
-import 'package:app_flutter/pages/core/main_drawer.dart';
 import 'package:app_flutter/theme/app-colors.dart';
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class IndexMembroPage extends StatefulWidget {
+  const IndexMembroPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _IndexMembroPageState createState() => _IndexMembroPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _IndexMembroPageState extends State<IndexMembroPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text("Membros"),
       ),
       body: Center(
         child: Column(
@@ -33,16 +22,11 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'Testando app no navegador',
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
           ],
         ),
       ),
-      drawer: const MainDrawer(),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: null,
         backgroundColor: AppColors.blue,
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
