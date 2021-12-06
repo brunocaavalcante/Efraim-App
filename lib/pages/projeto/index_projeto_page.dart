@@ -2,6 +2,8 @@ import 'package:app_flutter/theme/app-colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'cadastro_projeto_page.dart';
+
 class IndexProjetoPage extends StatefulWidget {
   const IndexProjetoPage({Key? key}) : super(key: key);
 
@@ -51,7 +53,12 @@ class _home_projeto_pageState extends State<IndexProjetoPage> {
       ),
       body: getProjetos(),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const CadastroProjetoPage()));
+        },
         backgroundColor: AppColors.blue,
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
