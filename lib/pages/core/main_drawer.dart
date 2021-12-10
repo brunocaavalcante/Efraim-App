@@ -23,37 +23,41 @@ class _MainDrawerState extends State<MainDrawer> {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               color: Theme.of(context).primaryColor,
-              child: Row(children: [
-                Container(
-                  width: 80,
-                  height: 80,
-                  margin: const EdgeInsets.only(top: 30, bottom: 10, right: 10),
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage("imagens/user-menu-photo.png"),
-                          fit: BoxFit.fill)),
-                ),
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Container(
-                      margin: const EdgeInsets.only(top: 30, right: 20),
-                      child: const Text("C.E.EFRAIM",
-                          style: TextStyle(
-                              fontSize: 25,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold))),
-                  Text(
-                    auth.usuario?.displayName ?? "",
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(fontSize: 17, color: Colors.white),
-                  ),
-                  Text(
-                    auth.usuario?.email ?? "",
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(fontSize: 14, color: Colors.white),
-                  )
-                ])
-              ])),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [
+                      Container(
+                        width: 50,
+                        height: 50,
+                        margin: const EdgeInsets.only(
+                            top: 30, bottom: 10, right: 10),
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image:
+                                    AssetImage("imagens/user-menu-photo.png"),
+                                fit: BoxFit.fill)),
+                      ),
+                      Container(
+                          margin: const EdgeInsets.only(top: 30, right: 20),
+                          child: const Text("C.E.EFRAIM",
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)))
+                    ]),
+                    Text(
+                      auth.usuario?.displayName ?? "",
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(fontSize: 17, color: Colors.white),
+                    ),
+                    Text(
+                      auth.usuario?.email ?? "",
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(fontSize: 14, color: Colors.white),
+                    )
+                  ])),
           ListTile(
               leading: const Icon(Icons.album_rounded),
               title: const Text("Projetos", style: TextStyle(fontSize: 18)),

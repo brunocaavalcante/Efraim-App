@@ -4,10 +4,10 @@ class Projeto {
   var id = '';
   String titulo = '';
   String descricao = '';
-  DateTime? dataCadastro = null;
-  DateTime? dataInicio = null;
-  DateTime? dataFinal = null;
-  Usuario? responsavel = null;
+  DateTime? dataCadastro;
+  DateTime? dataInicio;
+  DateTime? dataFinal;
+  Usuario? responsavel;
 
   Map<String, Object?> toJson() {
     return {
@@ -18,5 +18,14 @@ class Projeto {
       'DataCadastro': dataCadastro,
       'Id': id,
     };
+  }
+
+  Projeto toEntity(Map<String, dynamic> map) {
+    titulo = map['Titulo'];
+    descricao = map['Descricao'];
+    dataInicio = (map['DataInicio']).toDate();
+    dataFinal = (map['DataFim']).toDate();
+    id = map['Id'];
+    return this;
   }
 }

@@ -1,8 +1,10 @@
+import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/theme/app-colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'cadastro_projeto_page.dart';
+import 'datails_projeto_page.dart';
 
 class IndexProjetoPage extends StatefulWidget {
   const IndexProjetoPage({Key? key}) : super(key: key);
@@ -15,30 +17,42 @@ class _home_projeto_pageState extends State<IndexProjetoPage> {
   final Stream<QuerySnapshot> _projetoStream =
       FirebaseFirestore.instance.collection('projetos').snapshots();
 
+  mostrarDetalhes(Projeto projeto) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => DatailsProjetoPage(projeto: projeto),
+      ),
+    );
+  }
+
   getProjetos() {
     return StreamBuilder<QuerySnapshot>(
       stream: _projetoStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text('Erro!');
+          return const Text('Erro!');
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Carregando");
+          return const Text("Carregando");
         }
 
         return ListView(
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
+            data["Id"] = document.id;
+            var projeto = Projeto().toEntity(data);
+
             return ListTile(
-              leading: const Icon(
-                Icons.receipt_long_outlined,
-                size: 30,
-              ),
-              title: Text(data['Titulo']),
-              subtitle: Text(data['Descricao']),
-            );
+                leading: const Icon(
+                  Icons.receipt_long_outlined,
+                  size: 30,
+                ),
+                title: Text(projeto.titulo),
+                subtitle: Text(projeto.descricao),
+                onTap: () => mostrarDetalhes(projeto));
           }).toList(),
         );
       },
