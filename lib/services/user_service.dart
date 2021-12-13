@@ -32,6 +32,17 @@ class UserService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<Usuario> obterUsuarioPorId(String? id) async =>
+      await users.doc(id).get().then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          Map<String, dynamic> data =
+              documentSnapshot.data()! as Map<String, dynamic>;
+          var usuario = Usuario().toEntity(data);
+          return usuario;
+        }
+        return Usuario();
+      });
+
   registrar(Usuario usuario) async {
     try {
       if (usuario.senha != usuario.confirmSenha) {
@@ -46,8 +57,8 @@ class UserService extends ChangeNotifier {
       usuario.auth_id = user?.uid;
 
       if (auth.currentUser != null) {
-        await users.add(usuario.toJson()).catchError((error) =>
-            throw AuthException(
+        await users.doc(usuario.auth_id).set(usuario.toJson()).catchError(
+            (error) => throw AuthException(
                 "ocorreu um erro ao cadastrar tente novamente"));
       }
       _getUser();
@@ -58,6 +69,10 @@ class UserService extends ChangeNotifier {
         throw AuthException('Este email já está cadastrado');
       } else if (e.code == 'unknown') {
         throw AuthException('Senha inválida');
+      } else if (e.code == "invalid-email") {
+        throw AuthException('Email inválido!');
+      } else {
+        throw AuthException('Erro ao cadastrar, tente novamente!');
       }
     }
   }

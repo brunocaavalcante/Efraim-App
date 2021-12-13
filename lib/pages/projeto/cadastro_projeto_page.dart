@@ -1,6 +1,8 @@
 import 'package:app_flutter/models/projeto.dart';
+import 'package:app_flutter/models/user.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/services/user_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/src/provider.dart';
@@ -14,6 +16,7 @@ class CadastroProjetoPage extends StatefulWidget {
 }
 
 class _CadastroProjetoPageState extends State<CadastroProjetoPage> {
+  FirebaseAuth auth = FirebaseAuth.instance;
   final formKey = GlobalKey<FormState>();
   final titulo = TextEditingController();
   final dataInicio = TextEditingController();
@@ -44,6 +47,7 @@ class _CadastroProjetoPageState extends State<CadastroProjetoPage> {
     return TextFormField(
         decoration: const InputDecoration(labelText: 'Descrição:'),
         controller: descricao,
+        maxLines: 4,
         validator: (value) {
           if (value!.isEmpty) {
             return "Campo obrigatório";
@@ -100,13 +104,20 @@ class _CadastroProjetoPageState extends State<CadastroProjetoPage> {
       projeto.dataInicio = DateFormat('dd/MM/yyyy').parse(dataInicio.text);
       projeto.dataFinal = DateFormat('dd/MM/yyyy').parse(dataFim.text);
       projeto.dataCadastro = DateTime.now();
-      await context.read<ProjetoService>().salvarProjeto(projeto);
+      projeto.responsavel = Usuario();
+      projeto.responsavel!.auth_id = auth.currentUser!.uid;
+      projeto.responsavel!.name = auth.currentUser!.displayName;
+      salvar(projeto);
       Navigator.pop(context);
     } on AuthException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));
     }
+  }
+
+  salvar(Projeto projeto) async {
+    await context.read<ProjetoService>().salvarProjeto(projeto);
   }
 
   @override

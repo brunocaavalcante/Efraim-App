@@ -16,4 +16,15 @@ class Usuario {
       'dataNascimento': dataNascimento
     };
   }
+
+  Usuario toEntity(Map<String, dynamic> map) {
+    name = map['nome'] ?? "";
+    email = map['email'] ?? "";
+    telefone = map['telefone'] ?? "";
+    if (map['dataNascimento'] != null) {
+      dataNascimento = (map['dataNascimento']).toDate();
+    }
+
+    return this;
+  }
 }

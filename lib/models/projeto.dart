@@ -17,6 +17,7 @@ class Projeto {
       'DataFim': dataFinal,
       'DataCadastro': dataCadastro,
       'Id': id,
+      'Administrador': responsavel!.toJson()
     };
   }
 
@@ -25,6 +26,8 @@ class Projeto {
     descricao = map['Descricao'];
     dataInicio = (map['DataInicio']).toDate();
     dataFinal = (map['DataFim']).toDate();
+    dataCadastro = (map['DataCadastro']).toDate();
+    responsavel = Usuario().toEntity(map['Administrador']);
     id = map['Id'];
     return this;
   }

@@ -66,8 +66,8 @@ class _HomeProjetoState extends State<HomeProjetoPage> {
             title: const Text("Data Final"),
             subtitle: Text(formatarData(widget.projeto.dataFinal))),
         ListTile(
-            title: Text("Administrador"),
-            subtitle: Text("Bruno Cavalcante da Silva"))
+            title: const Text("Administrador"),
+            subtitle: Text(widget.projeto.responsavel!.name))
       ])),
     );
   }
