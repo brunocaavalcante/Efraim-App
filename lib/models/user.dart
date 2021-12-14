@@ -6,7 +6,7 @@ class Usuario {
   var telefone;
   var auth_id;
   var dataNascimento;
-
+  var id;
   Map<String, Object?> toJson() {
     return {
       'nome': name,
@@ -18,6 +18,7 @@ class Usuario {
   }
 
   Usuario toEntity(Map<String, dynamic> map) {
+    id = map['id'] ?? "";
     name = map['nome'] ?? "";
     email = map['email'] ?? "";
     telefone = map['telefone'] ?? "";

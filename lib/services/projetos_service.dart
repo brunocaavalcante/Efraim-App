@@ -44,4 +44,15 @@ class ProjetoService extends ChangeNotifier {
         .catchError((error) => throw AuthException(
             "ocorreu um erro ao atualizar tente novamente"));
   }
+
+  Future<void> excluirParticipanteProjeto(
+      Projeto projeto, Usuario participante) async {
+    await projetos
+        .doc(projeto.id)
+        .collection('participantes')
+        .doc(participante.id)
+        .delete()
+        .catchError((error) => throw AuthException(
+            "ocorreu um erro ao exluir participante tente novamente"));
+  }
 }

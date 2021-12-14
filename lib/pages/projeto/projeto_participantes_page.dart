@@ -2,7 +2,6 @@ import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/user.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/services/user_service.dart';
-import 'package:app_flutter/theme/app-colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
@@ -96,6 +95,28 @@ class _ParticipantePageState extends State<ParticipantePage> {
     );
   }
 
+  showAlertExcluirParticipante(Usuario participante) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Alerta!'),
+        content: const Text("Deseja realmente excluir o particiapante?"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancelar'),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+              onPressed: () async {
+                excluirParticipante(participante);
+                Navigator.pop(context, 'OK');
+              },
+              child: const Text('OK')),
+        ],
+      ),
+    );
+  }
+
   getParticipantes() {
     Stream<QuerySnapshot> _participanteStream = FirebaseFirestore.instance
         .collection('projetos')
@@ -119,18 +140,37 @@ class _ParticipantePageState extends State<ParticipantePage> {
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
-            data["Id"] = document.id;
+            data["id"] = document.id;
             var participante = Usuario().toEntity(data);
 
-            return ListTile(
-                leading: const Icon(
-                  Icons.assignment_ind_rounded,
-                  color: Colors.blueGrey,
-                  size: 30,
-                ),
-                title: Text(participante.name),
-                subtitle: Text(participante.email),
-                onTap: null);
+            return Container(
+              decoration: const BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Color(0xFFCFD8DC)))),
+              child: ListTile(
+                  leading: const Icon(
+                    Icons.perm_identity_rounded,
+                    color: Colors.blueGrey,
+                    size: 30,
+                  ),
+                  title: Text(participante.name),
+                  subtitle: Text(participante.email),
+                  onTap: null,
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(
+                          Icons.delete,
+                          size: 25.0,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          showAlertExcluirParticipante(participante);
+                        },
+                      ),
+                    ],
+                  )),
+            );
           }).toList(),
         );
       },
@@ -141,5 +181,11 @@ class _ParticipantePageState extends State<ParticipantePage> {
     await context
         .read<ProjetoService>()
         .addParticipanteProjeto(widget.projeto, user);
+  }
+
+  excluirParticipante(Usuario participante) async {
+    await context
+        .read<ProjetoService>()
+        .excluirParticipanteProjeto(widget.projeto, participante);
   }
 }
