@@ -44,6 +44,7 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
     return TextFormField(
         decoration: const InputDecoration(labelText: 'E-mail:'),
         controller: email,
+        keyboardType: TextInputType.emailAddress,
         validator: (value) {
           if (value!.isEmpty) {
             return "Campo obrigatório";

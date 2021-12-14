@@ -1,80 +1,145 @@
+import 'package:app_flutter/models/projeto.dart';
+import 'package:app_flutter/models/user.dart';
+import 'package:app_flutter/services/projetos_service.dart';
+import 'package:app_flutter/services/user_service.dart';
+import 'package:app_flutter/theme/app-colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 class ParticipantePage extends StatefulWidget {
-  const ParticipantePage({Key? key}) : super(key: key);
+  Projeto projeto;
+  ParticipantePage({Key? key, required this.projeto}) : super(key: key);
 
   @override
   _ParticipantePageState createState() => _ParticipantePageState();
 }
 
 class _ParticipantePageState extends State<ParticipantePage> {
+  final formKey = GlobalKey<FormState>();
+  final email = TextEditingController();
+  Usuario user = Usuario();
+
+  Widget fieldEmail() {
+    return TextFormField(
+        decoration: const InputDecoration(labelText: 'E-mail:'),
+        controller: email,
+        keyboardType: TextInputType.emailAddress,
+        validator: (value) {
+          bool emailValid = RegExp(
+                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+              .hasMatch(value.toString());
+          if (value!.isEmpty) {
+            return "Campo obrigatório";
+          } else if (!emailValid) {
+            return "Email inválido!";
+          }
+          return null;
+        });
+  }
+
+  emailExistente() async {
+    user = await context.read<UserService>().obterUsuarioPorEmail(email.text);
+    return user.email != null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
-        Expanded(
-          child: ItemInfo(),
-        ),
-      ],
+      children: <Widget>[addParticipante(), getParticipantes()],
     );
   }
 
-  Container participantesDetail() {
+  Container addParticipante() {
     return Container(
-      padding: const EdgeInsets.all(32.0),
-      child: ListTile(
-        title: Text("Participantes"),
-        subtitle: Text("Participante"),
-        leading: Icon(
-          Icons.emoji_emotions_rounded,
-          color: Colors.blueGrey[900],
-        ),
-      ),
-    );
-  }
-}
-
-class ItemInfo extends StatelessWidget {
-  const ItemInfo();
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      padding: EdgeInsets.all(20),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      child: Column(
-        children: <Widget>[
-          shopeName(),
-          Text(
-            "Nowadays, making printed materials have become fast, easy and simple. If you want your promotional material to be an eye-catching object, you should make it colored. By way of using inkjet printer this is not hard to make. An inkjet printer is any printer that places extremely small droplets of ink onto paper to create an image.",
-            style: TextStyle(
-              height: 1.5,
+        padding: const EdgeInsets.only(right: 32.0, left: 32, top: 32),
+        child: Row(
+          children: <Widget>[
+            const Icon(Icons.group_add_sharp, size: 30, color: Colors.blue),
+            const SizedBox(width: 10),
+            TextButton(
+              onPressed: () {
+                email.clear();
+                showAlertCadastroParticipante();
+              },
+              child: const Text("Adicionar Participante",
+                  style: TextStyle(fontSize: 20)),
             ),
+          ],
+        ));
+  }
+
+  showAlertCadastroParticipante() {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Adicionar Participante'),
+        content: Form(key: formKey, child: fieldEmail()),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancelar'),
+            child: const Text('Cancelar'),
           ),
-          SizedBox(height: size.height * 0.1),
+          TextButton(
+            onPressed: () async {
+              if (formKey.currentState!.validate()) {
+                if (await emailExistente()) {
+                  adicionarParticipante();
+                  Navigator.pop(context, 'OK');
+                } else {}
+              }
+            },
+            child: const Text('OK'),
+          ),
         ],
       ),
     );
   }
 
-  Row shopeName() {
-    return Row(
-      children: <Widget>[
-        Icon(
-          Icons.location_on,
-          color: Colors.amber,
-        ),
-        SizedBox(width: 10),
-        Text("name"),
-      ],
+  getParticipantes() {
+    Stream<QuerySnapshot> _participanteStream = FirebaseFirestore.instance
+        .collection('projetos')
+        .doc(widget.projeto.id)
+        .collection("participantes")
+        .snapshots();
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: _participanteStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Text('Erro!');
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text("Carregando");
+        }
+
+        return ListView(
+          shrinkWrap: true,
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
+            data["Id"] = document.id;
+            var participante = Usuario().toEntity(data);
+
+            return ListTile(
+                leading: const Icon(
+                  Icons.assignment_ind_rounded,
+                  color: Colors.blueGrey,
+                  size: 30,
+                ),
+                title: Text(participante.name),
+                subtitle: Text(participante.email),
+                onTap: null);
+          }).toList(),
+        );
+      },
     );
+  }
+
+  adicionarParticipante() async {
+    await context
+        .read<ProjetoService>()
+        .addParticipanteProjeto(widget.projeto, user);
   }
 }

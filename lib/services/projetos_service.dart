@@ -1,4 +1,5 @@
 import 'package:app_flutter/models/projeto.dart';
+import 'package:app_flutter/models/user.dart';
 import 'package:app_flutter/repository/base-repository.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,5 +33,15 @@ class ProjetoService extends ChangeNotifier {
   salvarProjeto(Projeto entity) async {
     await projetos.add(entity.toJson()).catchError((error) =>
         throw AuthException("ocorreu um erro ao cadastrar tente novamente"));
+  }
+
+  Future<void> addParticipanteProjeto(
+      Projeto projeto, Usuario participante) async {
+    await projetos
+        .doc(projeto.id)
+        .collection('participantes')
+        .add(participante.toJson())
+        .catchError((error) => throw AuthException(
+            "ocorreu um erro ao atualizar tente novamente"));
   }
 }
