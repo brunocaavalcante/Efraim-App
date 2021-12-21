@@ -1,5 +1,6 @@
 import 'package:app_flutter/models/projeto.dart';
-import 'package:app_flutter/models/user.dart';
+import 'package:app_flutter/models/task.dart';
+import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/repository/base-repository.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,6 +36,18 @@ class ProjetoService extends ChangeNotifier {
         throw AuthException("ocorreu um erro ao cadastrar tente novamente"));
   }
 
+//REGION TASKS
+  Future<void> addTaskParticipanteProjeto(
+      String idProjeto, String idParticipante, Task task) async {
+    await projetos
+        .doc(idProjeto)
+        .collection('tasks/' + idParticipante)
+        .add(task.toJson())
+        .catchError((error) =>
+            throw AuthException("Ocorreu um erro ao cadastrar a task."));
+  }
+
+//REGION PARTICIPANTES
   Future<void> addParticipanteProjeto(
       Projeto projeto, Usuario participante) async {
     await projetos
@@ -55,4 +68,5 @@ class ProjetoService extends ChangeNotifier {
         .catchError((error) => throw AuthException(
             "ocorreu um erro ao exluir participante tente novamente"));
   }
+  //END REGION PARTICIPANTES
 }

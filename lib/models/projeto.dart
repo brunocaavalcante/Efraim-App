@@ -1,4 +1,4 @@
-import 'package:app_flutter/models/user.dart';
+import 'package:app_flutter/models/usuario.dart';
 
 class Projeto {
   var id = '';

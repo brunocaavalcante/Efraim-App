@@ -1,5 +1,5 @@
 import 'package:app_flutter/models/projeto.dart';
-import 'package:app_flutter/models/user.dart';
+import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -85,7 +85,10 @@ class _ParticipantePageState extends State<ParticipantePage> {
                 if (await emailExistente()) {
                   adicionarParticipante();
                   Navigator.pop(context, 'OK');
-                } else {}
+                } else {
+                  showAlert(
+                      "Alerta!", "Email não cadastrado, por favor verifique.");
+                }
               }
             },
             child: const Text('OK'),
@@ -100,7 +103,7 @@ class _ParticipantePageState extends State<ParticipantePage> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: const Text('Alerta!'),
-        content: const Text("Deseja realmente excluir o particiapante?"),
+        content: const Text("Deseja realmente excluir o participante?"),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancelar'),
@@ -115,6 +118,21 @@ class _ParticipantePageState extends State<ParticipantePage> {
         ],
       ),
     );
+  }
+
+  showAlert(String title, String msg) {
+    return showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+                title: Text(title),
+                content: Text(msg),
+                actions: <Widget>[
+                  TextButton(
+                      onPressed: () async {
+                        Navigator.pop(context, 'OK');
+                      },
+                      child: const Text('OK')),
+                ]));
   }
 
   getParticipantes() {
@@ -148,9 +166,9 @@ class _ParticipantePageState extends State<ParticipantePage> {
                   border: Border(bottom: BorderSide(color: Color(0xFFCFD8DC)))),
               child: ListTile(
                   leading: const Icon(
-                    Icons.perm_identity_rounded,
+                    Icons.account_circle_rounded,
                     color: Colors.blueGrey,
-                    size: 30,
+                    size: 50,
                   ),
                   title: Text(participante.name),
                   subtitle: Text(participante.email),
@@ -161,7 +179,7 @@ class _ParticipantePageState extends State<ParticipantePage> {
                       IconButton(
                         icon: const Icon(
                           Icons.delete,
-                          size: 25.0,
+                          size: 32.0,
                           color: Colors.red,
                         ),
                         onPressed: () {

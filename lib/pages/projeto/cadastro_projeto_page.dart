@@ -1,5 +1,5 @@
 import 'package:app_flutter/models/projeto.dart';
-import 'package:app_flutter/models/user.dart';
+import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';

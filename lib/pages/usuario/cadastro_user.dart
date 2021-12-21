@@ -1,4 +1,4 @@
-import 'package:app_flutter/models/user.dart';
+import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
