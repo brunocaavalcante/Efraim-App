@@ -1,4 +1,5 @@
 import 'package:app_flutter/models/usuario.dart';
+import 'package:app_flutter/pages/core/custom_exception.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -132,7 +133,7 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
           DateFormat('dd/MM/yyyy').parse(dataNascimento.text);
       await context.read<UserService>().registrar(usuario);
       Navigator.pop(context);
-    } on AuthException catch (e) {
+    } on CustomException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));

@@ -8,6 +8,7 @@ class Projeto {
   DateTime? dataInicio;
   DateTime? dataFinal;
   Usuario? responsavel;
+  List<Usuario> listParticipantes = [];
 
   Map<String, Object?> toJson() {
     return {

@@ -1,3 +1,4 @@
+import 'package:app_flutter/pages/core/custom_exception.dart';
 import 'package:app_flutter/pages/usuario/cadastro_user.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => loading = true);
     try {
       await context.read<UserService>().login(email.text, senha.text);
-    } on AuthException catch (e) {
+    } on CustomException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));

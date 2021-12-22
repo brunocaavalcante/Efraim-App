@@ -10,7 +10,7 @@ class AppTheme {
 
   ThemeData defaultTheme() => ThemeData(
         primaryColor: const Color.fromRGBO(79, 88, 100, 1),
-        primaryColorDark: AppColors.accent,
+        primaryColorDark: AppColors.blue,
         buttonColor: const Color.fromRGBO(79, 88, 100, 1),
         accentColor: AppColors.accent,
         appBarTheme:

@@ -1,7 +1,7 @@
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/usuario.dart';
+import 'package:app_flutter/pages/core/custom_exception.dart';
 import 'package:app_flutter/services/projetos_service.dart';
-import 'package:app_flutter/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -109,7 +109,7 @@ class _CadastroProjetoPageState extends State<CadastroProjetoPage> {
       projeto.responsavel!.name = auth.currentUser!.displayName;
       salvar(projeto);
       Navigator.pop(context);
-    } on AuthException catch (e) {
+    } on CustomException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));

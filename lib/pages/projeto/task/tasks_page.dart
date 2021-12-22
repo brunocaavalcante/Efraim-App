@@ -2,7 +2,6 @@ import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/task.dart';
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/projeto/task/task_add_page.dart';
-import 'package:app_flutter/theme/app-colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +17,7 @@ class _TasksPageState extends State<TasksPage> {
   final formKey = GlobalKey<FormState>();
   final descricao = TextEditingController();
   final titulo = TextEditingController();
+  var participantes = <Usuario>[];
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +75,7 @@ class _TasksPageState extends State<TasksPage> {
                 document.data()! as Map<String, dynamic>;
             data["id"] = document.id;
             var participante = Usuario().toEntity(data);
+            participantes.add(participante);
 
             return Container(
               decoration: const BoxDecoration(
@@ -102,10 +103,11 @@ class _TasksPageState extends State<TasksPage> {
             const SizedBox(width: 10),
             TextButton(
               onPressed: () {
+                widget.projeto.listParticipantes = participantes;
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => TaskAddPage(),
+                    builder: (_) => TaskAddPage(projeto: widget.projeto),
                   ),
                 );
               },

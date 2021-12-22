@@ -1,5 +1,6 @@
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/usuario.dart';
+import 'package:app_flutter/pages/core/alertService.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -86,8 +87,8 @@ class _ParticipantePageState extends State<ParticipantePage> {
                   adicionarParticipante();
                   Navigator.pop(context, 'OK');
                 } else {
-                  showAlert(
-                      "Alerta!", "Email não cadastrado, por favor verifique.");
+                  AlertService.showAlert("Alerta!",
+                      "Email não cadastrado, por favor verifique.", context);
                 }
               }
             },
@@ -118,21 +119,6 @@ class _ParticipantePageState extends State<ParticipantePage> {
         ],
       ),
     );
-  }
-
-  showAlert(String title, String msg) {
-    return showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-                title: Text(title),
-                content: Text(msg),
-                actions: <Widget>[
-                  TextButton(
-                      onPressed: () async {
-                        Navigator.pop(context, 'OK');
-                      },
-                      child: const Text('OK')),
-                ]));
   }
 
   getParticipantes() {

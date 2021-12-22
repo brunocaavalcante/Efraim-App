@@ -1,12 +1,8 @@
 import 'package:app_flutter/models/usuario.dart';
+import 'package:app_flutter/pages/core/custom_exception.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-class AuthException implements Exception {
-  String message;
-  AuthException(this.message);
-}
 
 class UserService extends ChangeNotifier {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -60,7 +56,7 @@ class UserService extends ChangeNotifier {
   registrar(Usuario usuario) async {
     try {
       if (usuario.senha != usuario.confirmSenha) {
-        throw AuthException('As senhas são diferentes!');
+        throw CustomException('As senhas são diferentes!');
       }
 
       UserCredential result = await auth.createUserWithEmailAndPassword(
@@ -72,21 +68,21 @@ class UserService extends ChangeNotifier {
 
       if (auth.currentUser != null) {
         await users.doc(usuario.auth_id).set(usuario.toJson()).catchError(
-            (error) => throw AuthException(
+            (error) => throw CustomException(
                 "ocorreu um erro ao cadastrar tente novamente"));
       }
       _getUser();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        throw AuthException('A senha é muito fraca!');
+        throw CustomException('A senha é muito fraca!');
       } else if (e.code == 'email-already-in-use') {
-        throw AuthException('Este email já está cadastrado');
+        throw CustomException('Este email já está cadastrado');
       } else if (e.code == 'unknown') {
-        throw AuthException('Senha inválida');
+        throw CustomException('Senha inválida');
       } else if (e.code == "invalid-email") {
-        throw AuthException('Email inválido!');
+        throw CustomException('Email inválido!');
       } else {
-        throw AuthException('Erro ao cadastrar, tente novamente!');
+        throw CustomException('Erro ao cadastrar, tente novamente!');
       }
     }
   }
@@ -97,9 +93,9 @@ class UserService extends ChangeNotifier {
       _getUser();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        throw AuthException('Email não encontrado. Cadastre-se.');
+        throw CustomException('Email não encontrado. Cadastre-se.');
       } else if (e.code == 'wrong-password') {
-        throw AuthException('Senha incorreta. Tente novamente');
+        throw CustomException('Senha incorreta. Tente novamente');
       }
     }
   }

@@ -1,6 +1,7 @@
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/task.dart';
 import 'package:app_flutter/models/usuario.dart';
+import 'package:app_flutter/pages/core/custom_exception.dart';
 import 'package:app_flutter/repository/base-repository.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,7 +34,7 @@ class ProjetoService extends ChangeNotifier {
 
   salvarProjeto(Projeto entity) async {
     await projetos.add(entity.toJson()).catchError((error) =>
-        throw AuthException("ocorreu um erro ao cadastrar tente novamente"));
+        throw CustomException("ocorreu um erro ao cadastrar tente novamente"));
   }
 
 //REGION TASKS
@@ -41,10 +42,12 @@ class ProjetoService extends ChangeNotifier {
       String idProjeto, String idParticipante, Task task) async {
     await projetos
         .doc(idProjeto)
-        .collection('tasks/' + idParticipante)
+        .collection('participantes')
+        .doc(idParticipante)
+        .collection('tasks')
         .add(task.toJson())
         .catchError((error) =>
-            throw AuthException("Ocorreu um erro ao cadastrar a task."));
+            throw CustomException("Ocorreu um erro ao cadastrar a task."));
   }
 
 //REGION PARTICIPANTES
@@ -54,7 +57,7 @@ class ProjetoService extends ChangeNotifier {
         .doc(projeto.id)
         .collection('participantes')
         .add(participante.toJson())
-        .catchError((error) => throw AuthException(
+        .catchError((error) => throw CustomException(
             "ocorreu um erro ao atualizar tente novamente"));
   }
 
@@ -65,8 +68,29 @@ class ProjetoService extends ChangeNotifier {
         .collection('participantes')
         .doc(participante.id)
         .delete()
-        .catchError((error) => throw AuthException(
+        .catchError((error) => throw CustomException(
             "ocorreu um erro ao exluir participante tente novamente"));
+  }
+
+  Future<List<Usuario>> getParticipantes(Projeto projeto) async {
+    FirebaseFirestore db = await BaseRepository.get();
+    var snapshot = await db
+        .collection(path)
+        .doc(projeto.id)
+        .collection("participantes")
+        .get();
+
+    List<Usuario> usuarios = [];
+    snapshot.docs.forEach((doc) {
+      final data = doc.data();
+      var usuario = Usuario();
+      usuario.id = doc.id;
+      usuario.name = data['Nome'];
+      usuario.email = data['Email'];
+      usuarios.add(usuario);
+    });
+
+    return usuarios;
   }
   //END REGION PARTICIPANTES
 }

@@ -7,6 +7,9 @@ class Usuario {
   var auth_id;
   var dataNascimento;
   var id;
+  bool? check = false;
+  var photo;
+
   Map<String, Object?> toJson() {
     return {
       'nome': name,
