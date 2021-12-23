@@ -3,9 +3,9 @@ import 'package:app_flutter/models/usuario.dart';
 class Task {
   String descricao = '';
   DateTime? dataCadastro;
-  String status = '';
   Usuario? responsavel;
   String id = '';
+  bool? status = false;
 
   Map<String, Object?> toJson() {
     return {
@@ -19,7 +19,7 @@ class Task {
   Task toEntity(Map<String, dynamic> map) {
     id = map['id'] ?? "";
     descricao = map['descricao'] ?? "";
-    status = map['status'] ?? "";
+    status = map['status'] ?? false;
     if (map['dataCadastro'] != null) {
       dataCadastro = (map['dataCadastro']).toDate();
     }

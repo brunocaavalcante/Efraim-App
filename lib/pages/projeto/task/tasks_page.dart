@@ -2,8 +2,10 @@ import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/task.dart';
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/projeto/task/task_add_page.dart';
+import 'package:app_flutter/services/projetos_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/src/provider.dart';
 
 class TasksPage extends StatefulWidget {
   Projeto projeto;
@@ -14,40 +16,19 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage> {
-  final formKey = GlobalKey<FormState>();
-  final descricao = TextEditingController();
-  final titulo = TextEditingController();
   var participantes = <Usuario>[];
 
   @override
   Widget build(BuildContext context) {
+    participantes = [];
     return Column(
-      children: <Widget>[addTask(), getParticipantesTasks()],
+      children: <Widget>[
+        addTask(),
+        Container(
+            height: MediaQuery.of(context).size.height / 1.5,
+            child: getParticipantesTasks())
+      ],
     );
-  }
-
-  Widget fieldTitulo() {
-    return TextFormField(
-        decoration: const InputDecoration(labelText: 'Tituilo:'),
-        controller: titulo,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Campo obrigatório";
-          }
-          return null;
-        });
-  }
-
-  Widget fieldDescricao() {
-    return TextFormField(
-        decoration: const InputDecoration(labelText: 'Descrição:'),
-        controller: descricao,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Campo obrigatório";
-          }
-          return null;
-        });
   }
 
   getParticipantesTasks() {
@@ -84,7 +65,7 @@ class _TasksPageState extends State<TasksPage> {
                   leading: const Icon(Icons.account_circle_rounded,
                       color: Colors.blueGrey, size: 50),
                   title: Text(participante.name),
-                  children: []),
+                  children: [getTasks(participante)]),
             );
           }).toList(),
         );
@@ -116,5 +97,84 @@ class _TasksPageState extends State<TasksPage> {
             ),
           ],
         ));
+  }
+
+  getTasks(Usuario participante) {
+    Stream<QuerySnapshot> tasksStream = FirebaseFirestore.instance
+        .collection('projetos')
+        .doc(widget.projeto.id)
+        .collection("participantes")
+        .doc(participante.id)
+        .collection('tasks')
+        .snapshots();
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: tasksStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Text('Erro!');
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text("Carregando");
+        }
+
+        return ListView(
+          shrinkWrap: true,
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
+            data["id"] = document.id;
+            var task = Task().toEntity(data);
+
+            return Container(
+              height: 40,
+              margin: const EdgeInsetsDirectional.only(start: 35, bottom: 5),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(1),
+                          bottomRight: Radius.circular(1),
+                          topLeft: Radius.circular(1),
+                          topRight: Radius.circular(1),
+                        ),
+                        child: Theme(
+                            data: ThemeData(
+                              checkboxTheme: CheckboxThemeData(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+                            ),
+                            child: CheckboxListTile(
+                              value: task.status,
+                              onChanged: (newValue) async {
+                                task.status = newValue;
+                                await context
+                                    .read<ProjetoService>()
+                                    .updateTaskParticipanteProjeto(
+                                        widget.projeto.id,
+                                        participante.id,
+                                        task);
+                              },
+                              title: Text(task.descricao,
+                                  style: task.status == true
+                                      ? const TextStyle(color: Colors.grey)
+                                      : const TextStyle(color: Colors.black),
+                                  textAlign: TextAlign.start),
+                              controlAffinity: ListTileControlAffinity.leading,
+                            ))),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        );
+      },
+    );
   }
 }

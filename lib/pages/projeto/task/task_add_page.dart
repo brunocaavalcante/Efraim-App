@@ -152,18 +152,17 @@ class _TaskAddPageState extends State<TaskAddPage> {
           task.dataCadastro = DateTime.now();
           task.descricao = descricao.text;
           task.responsavel = item;
-          task.status = 'Pendente';
 
           await context
               .read<ProjetoService>()
-              .addTaskParticipanteProjeto(widget.projeto.id, item.id, task)
-              .then((value) => null);
-          Navigator.pop(context);
+              .addTaskParticipanteProjeto(widget.projeto.id, item.id, task);
         }
       }
       if (!anySelected) {
         AlertService.showAlert(
             "Alerta!", "Nenhum participante selecionado!", context);
+      } else {
+        Navigator.pop(context);
       }
     } on CustomException catch (e) {
       ScaffoldMessenger.of(context)

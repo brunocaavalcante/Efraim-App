@@ -50,6 +50,19 @@ class ProjetoService extends ChangeNotifier {
             throw CustomException("Ocorreu um erro ao cadastrar a task."));
   }
 
+  Future<void> updateTaskParticipanteProjeto(
+      String idProjeto, String idParticipante, Task task) async {
+    await projetos
+        .doc(idProjeto)
+        .collection('participantes')
+        .doc(idParticipante)
+        .collection('tasks')
+        .doc(task.id)
+        .set(task.toJson())
+        .catchError((error) =>
+            throw CustomException("Ocorreu um erro ao atualizar a task."));
+  }
+
 //REGION PARTICIPANTES
   Future<void> addParticipanteProjeto(
       Projeto projeto, Usuario participante) async {
