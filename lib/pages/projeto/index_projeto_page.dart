@@ -39,22 +39,33 @@ class _home_projeto_pageState extends State<IndexProjetoPage> {
         }
 
         return ListView(
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
-            data["Id"] = document.id;
-            var projeto = Projeto().toEntity(data);
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+          data["Id"] = document.id;
+          var projeto = Projeto().toEntity(data);
 
-            return ListTile(
-                leading: const Icon(
-                  Icons.receipt_long_outlined,
-                  size: 30,
-                ),
-                title: Text(projeto.titulo),
-                subtitle: Text(projeto.descricao),
-                onTap: () => mostrarDetalhes(projeto));
-          }).toList(),
-        );
+          return GestureDetector(
+              onTap: () => mostrarDetalhes(projeto),
+              child: Container(
+                  margin: const EdgeInsets.all(10),
+                  child: Card(
+                      elevation: 10,
+                      child: Column(children: [
+                        Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.3,
+                            margin: const EdgeInsets.all(10),
+                            child: projeto.photo != ''
+                                ? Image.network(projeto.photo,
+                                    fit: BoxFit.fitHeight)
+                                : Image.asset(
+                                    "imagens/add-photo-back-white.png",
+                                    fit: BoxFit.fitHeight)),
+                        ListTile(
+                            title: Text(projeto.titulo),
+                            subtitle: Text(projeto.descricao))
+                      ]))));
+        }).toList());
       },
     );
   }

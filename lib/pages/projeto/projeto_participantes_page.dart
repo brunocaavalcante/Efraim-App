@@ -150,30 +150,45 @@ class _ParticipantePageState extends State<ParticipantePage> {
             return Container(
               decoration: const BoxDecoration(
                   border: Border(bottom: BorderSide(color: Color(0xFFCFD8DC)))),
-              child: ListTile(
-                  leading: const Icon(
-                    Icons.account_circle_rounded,
-                    color: Colors.blueGrey,
-                    size: 50,
-                  ),
-                  title: Text(participante.name),
-                  subtitle: Text(participante.email),
-                  onTap: null,
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          size: 32.0,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          showAlertExcluirParticipante(participante);
-                        },
-                      ),
-                    ],
-                  )),
+              child: Dismissible(
+                key: UniqueKey(),
+                direction: DismissDirection.endToStart,
+                onDismissed: (_) async {
+                  await context
+                      .read<ProjetoService>()
+                      .excluirParticipanteProjeto(widget.projeto, participante);
+                },
+                child: Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    child: ListTile(
+                        trailing: const Icon(Icons.arrow_back_ios_new),
+                        leading: Container(
+                            width: 50,
+                            height: 50,
+                            clipBehavior: Clip.antiAlias,
+                            decoration:
+                                const BoxDecoration(shape: BoxShape.circle),
+                            child: participante.photo != null
+                                ? Image.network(
+                                    'https://picsum.photos/seed/855/600',
+                                    fit: BoxFit.cover)
+                                : Image.asset("imagens/logo_sem_nome.png",
+                                    fit: BoxFit.cover)),
+                        subtitle: Text(participante.email),
+                        title: Text(participante.name,
+                            textAlign: TextAlign.start))),
+                background: Container(
+                    color: Colors.red,
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                        margin: const EdgeInsets.only(right: 20),
+                        child: const Text("Excluir",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)))),
+              ),
             );
           }).toList(),
         );

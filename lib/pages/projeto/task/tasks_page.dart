@@ -25,7 +25,7 @@ class _TasksPageState extends State<TasksPage> {
       children: <Widget>[
         addTask(),
         Container(
-            height: MediaQuery.of(context).size.height / 1.5,
+            height: MediaQuery.of(context).size.height * 0.67,
             child: getParticipantesTasks())
       ],
     );
@@ -65,15 +65,18 @@ class _TasksPageState extends State<TasksPage> {
                   leading: const Icon(Icons.account_circle_rounded,
                       color: Colors.blueGrey, size: 50),
                   title: Text(participante.name),
-                  children: [getTasks(participante)]),
+                  children: [
+                    Container(
+                        color: Colors.grey[100],
+                        height: MediaQuery.of(context).size.height * 0.30,
+                        child: getTasks(participante))
+                  ]),
             );
           }).toList(),
         );
       },
     );
   }
-
-  mostrarDetalhes(Task task) {}
 
   Container addTask() {
     return Container(
@@ -128,50 +131,52 @@ class _TasksPageState extends State<TasksPage> {
             var task = Task().toEntity(data);
 
             return Container(
-              height: 40,
-              margin: const EdgeInsetsDirectional.only(start: 35, bottom: 5),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(1),
-                          bottomRight: Radius.circular(1),
-                          topLeft: Radius.circular(1),
-                          topRight: Radius.circular(1),
-                        ),
-                        child: Theme(
-                            data: ThemeData(
-                              checkboxTheme: CheckboxThemeData(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
+                margin: const EdgeInsetsDirectional.only(start: 35, bottom: 5),
+                child: Dismissible(
+                  key: UniqueKey(),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (_) async {
+                    await context.read<ProjetoService>().deleteTaskParticipante(
+                        widget.projeto.id, participante.id, task);
+                  },
+                  child: Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Theme(
+                          data: ThemeData(
+                            checkboxTheme: CheckboxThemeData(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
                               ),
                             ),
-                            child: CheckboxListTile(
-                              value: task.status,
-                              onChanged: (newValue) async {
-                                task.status = newValue;
-                                await context
-                                    .read<ProjetoService>()
-                                    .updateTaskParticipanteProjeto(
-                                        widget.projeto.id,
-                                        participante.id,
-                                        task);
-                              },
-                              title: Text(task.descricao,
-                                  style: task.status == true
-                                      ? const TextStyle(color: Colors.grey)
-                                      : const TextStyle(color: Colors.black),
-                                  textAlign: TextAlign.start),
-                              controlAffinity: ListTileControlAffinity.leading,
-                            ))),
-                  ),
-                ],
-              ),
-            );
+                          ),
+                          child: CheckboxListTile(
+                            value: task.status,
+                            onChanged: (newValue) async {
+                              task.status = newValue;
+                              await context
+                                  .read<ProjetoService>()
+                                  .updateTaskParticipanteProjeto(
+                                      widget.projeto.id, participante.id, task);
+                            },
+                            title: Text(task.descricao,
+                                style: task.status == true
+                                    ? const TextStyle(color: Colors.grey)
+                                    : const TextStyle(color: Colors.black),
+                                textAlign: TextAlign.start),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ))),
+                  background: Container(
+                      color: Colors.red,
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                          margin: const EdgeInsets.only(right: 20),
+                          child: const Text("Excluir",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold)))),
+                ));
           }).toList(),
         );
       },

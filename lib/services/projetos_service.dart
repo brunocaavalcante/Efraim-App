@@ -37,6 +37,16 @@ class ProjetoService extends ChangeNotifier {
         throw CustomException("ocorreu um erro ao cadastrar tente novamente"));
   }
 
+  updateProjeto(Projeto entity) async {
+    await projetos.doc(entity.id).set(entity.toJson()).catchError((error) =>
+        throw CustomException("ocorreu um erro ao atualizar tente novamente"));
+  }
+
+  excluirProjeto(Projeto entity) async {
+    await projetos.doc(entity.id).delete().catchError((error) =>
+        throw CustomException("ocorreu um erro ao excluir tente novamente"));
+  }
+
 //REGION TASKS
   Future<void> addTaskParticipanteProjeto(
       String idProjeto, String idParticipante, Task task) async {
@@ -61,6 +71,19 @@ class ProjetoService extends ChangeNotifier {
         .set(task.toJson())
         .catchError((error) =>
             throw CustomException("Ocorreu um erro ao atualizar a task."));
+  }
+
+  Future<void> deleteTaskParticipante(
+      String idProjeto, String idParticipante, Task task) async {
+    await projetos
+        .doc(idProjeto)
+        .collection('participantes')
+        .doc(idParticipante)
+        .collection('tasks')
+        .doc(task.id)
+        .delete()
+        .catchError((error) =>
+            throw CustomException("Ocorreu um erro ao excluir a task."));
   }
 
 //REGION PARTICIPANTES

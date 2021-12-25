@@ -9,6 +9,7 @@ class Projeto {
   DateTime? dataFinal;
   Usuario? responsavel;
   List<Usuario> listParticipantes = [];
+  String photo = '';
 
   Map<String, Object?> toJson() {
     return {
@@ -18,13 +19,15 @@ class Projeto {
       'DataFim': dataFinal,
       'DataCadastro': dataCadastro,
       'Id': id,
-      'Administrador': responsavel!.toJson()
+      'Administrador': responsavel!.toJson(),
+      'Photo': photo
     };
   }
 
   Projeto toEntity(Map<String, dynamic> map) {
     titulo = map['Titulo'];
     descricao = map['Descricao'];
+    photo = map['Photo'] ?? '';
     dataInicio = (map['DataInicio']).toDate();
     dataFinal = (map['DataFim']).toDate();
     dataCadastro = (map['DataCadastro']).toDate();
