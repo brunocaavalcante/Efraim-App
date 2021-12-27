@@ -58,8 +58,7 @@ class _home_projeto_pageState extends State<IndexProjetoPage> {
                             child: projeto.photo != ''
                                 ? Image.network(projeto.photo,
                                     fit: BoxFit.fitHeight)
-                                : Image.asset(
-                                    "imagens/add-photo-back-white.png",
+                                : Image.asset("imagens/logo_sem_nome.png",
                                     fit: BoxFit.fitHeight)),
                         ListTile(
                             title: Text(projeto.titulo),

@@ -1,6 +1,10 @@
+import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/membros/index_membro_page.dart';
 import 'package:app_flutter/pages/projeto/index_projeto_page.dart';
+import 'package:app_flutter/pages/usuario/cadastro_user.dart';
+import 'package:app_flutter/pages/usuario/meu_perfil.dart';
 import 'package:app_flutter/services/user_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 
@@ -22,25 +26,28 @@ class _MainDrawerState extends State<MainDrawer> {
           Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
+              height: 150,
               color: Theme.of(context).primaryColor,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(children: [
                       Container(
-                        width: 50,
-                        height: 50,
-                        margin: const EdgeInsets.only(
-                            top: 30, bottom: 10, right: 10),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image:
-                                    AssetImage("imagens/user-menu-photo.png"),
-                                fit: BoxFit.fill)),
-                      ),
+                          width: 40,
+                          height: 40,
+                          margin: const EdgeInsets.only(
+                              top: 15, right: 10, bottom: 10),
+                          clipBehavior: Clip.antiAlias,
+                          decoration:
+                              const BoxDecoration(shape: BoxShape.circle),
+                          child: auth.usuario?.photoURL != null
+                              ? Image.network(auth.usuario?.photoURL as String,
+                                  fit: BoxFit.cover)
+                              : Image.asset("imagens/logo_sem_nome.png",
+                                  fit: BoxFit.cover)),
                       Container(
-                          margin: const EdgeInsets.only(top: 30, right: 20),
+                          margin: const EdgeInsets.only(
+                              top: 20, right: 20, bottom: 10),
                           child: const Text("C.E.EFRAIM",
                               style: TextStyle(
                                   fontSize: 25,
@@ -77,10 +84,25 @@ class _MainDrawerState extends State<MainDrawer> {
                         builder: (context) => const IndexMembroPage()));
               }),
           ListTile(
-            leading: Icon(Icons.offline_pin_rounded),
-            title: Text("Departamentos", style: TextStyle(fontSize: 18)),
-            onTap: null,
-          ),
+              leading: const Icon(Icons.offline_pin_rounded),
+              title:
+                  const Text("Departamentos", style: TextStyle(fontSize: 18)),
+              onTap: null),
+          ListTile(
+              leading: const Icon(Icons.person_search),
+              title: const Text("Meu Perfil", style: TextStyle(fontSize: 18)),
+              onTap: () async {
+                Usuario usuario =
+                    await auth.obterUsuarioPorId(auth.usuario!.uid);
+                if (usuario.name != null) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MeuPerfil(
+                                usuario: usuario,
+                              )));
+                }
+              }),
           ListTile(
             leading:
                 const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.red),

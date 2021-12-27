@@ -148,8 +148,7 @@ class _ParticipantePageState extends State<ParticipantePage> {
             var participante = Usuario().toEntity(data);
 
             return Container(
-              decoration: const BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFCFD8DC)))),
+              margin: const EdgeInsets.only(bottom: 10),
               child: Dismissible(
                 key: UniqueKey(),
                 direction: DismissDirection.endToStart,
@@ -168,9 +167,9 @@ class _ParticipantePageState extends State<ParticipantePage> {
                             clipBehavior: Clip.antiAlias,
                             decoration:
                                 const BoxDecoration(shape: BoxShape.circle),
-                            child: participante.photo != null
-                                ? Image.network(
-                                    'https://picsum.photos/seed/855/600',
+                            child: participante.photo != null &&
+                                    participante.photo != ""
+                                ? Image.network(participante.photo as String,
                                     fit: BoxFit.cover)
                                 : Image.asset("imagens/logo_sem_nome.png",
                                     fit: BoxFit.cover)),

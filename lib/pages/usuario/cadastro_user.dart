@@ -166,9 +166,7 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
                 borderRadius: BorderRadius.circular(17.0))));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cadastro de Usuário'),
-      ),
+      appBar: AppBar(title: const Text('Cadastro de Usuário')),
       body: SingleChildScrollView(
           child: Padding(
         padding: const EdgeInsets.all(10),
