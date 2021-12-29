@@ -39,6 +39,17 @@ class UserService extends ChangeNotifier {
         return Usuario();
       });
 
+  Future<String?> obterPhotoUsuarioPorId(String? id) async =>
+      await users.doc(id).get().then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          Map<String, dynamic> data =
+              documentSnapshot.data()! as Map<String, dynamic>;
+          var usuario = Usuario().toEntity(data);
+          return usuario.photo;
+        }
+        return "";
+      });
+
   Future<Usuario> obterUsuarioPorEmail(String email) async {
     Usuario user = Usuario();
     await users

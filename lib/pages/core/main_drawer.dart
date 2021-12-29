@@ -33,10 +33,10 @@ class _MainDrawerState extends State<MainDrawer> {
                   children: [
                     Row(children: [
                       Container(
-                          width: 40,
-                          height: 40,
+                          width: 45,
+                          height: 45,
                           margin: const EdgeInsets.only(
-                              top: 15, right: 10, bottom: 10),
+                              top: 15, right: 10, bottom: 5),
                           clipBehavior: Clip.antiAlias,
                           decoration:
                               const BoxDecoration(shape: BoxShape.circle),

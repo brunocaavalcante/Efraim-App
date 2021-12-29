@@ -57,7 +57,7 @@ class _home_projeto_pageState extends State<IndexProjetoPage> {
                             margin: const EdgeInsets.all(10),
                             child: projeto.photo != ''
                                 ? Image.network(projeto.photo,
-                                    fit: BoxFit.fitHeight)
+                                    fit: BoxFit.cover)
                                 : Image.asset("imagens/logo_sem_nome.png",
                                     fit: BoxFit.fitHeight)),
                         ListTile(

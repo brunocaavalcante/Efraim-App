@@ -129,70 +129,64 @@ class _ParticipantePageState extends State<ParticipantePage> {
         .snapshots();
 
     return StreamBuilder<QuerySnapshot>(
-      stream: _participanteStream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return const Text('Erro!');
-        }
+        stream: _participanteStream,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Text('Erro!');
+          }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Carregando");
-        }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text("Carregando");
+          }
 
-        return ListView(
-          shrinkWrap: true,
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
-            data["id"] = document.id;
-            var participante = Usuario().toEntity(data);
+          return ListView(
+            shrinkWrap: true,
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              Map<String, dynamic> data =
+                  document.data()! as Map<String, dynamic>;
+              data["id"] = document.id;
+              var participante = Usuario().toEntity(data);
 
-            return Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              child: Dismissible(
-                key: UniqueKey(),
-                direction: DismissDirection.endToStart,
-                onDismissed: (_) async {
-                  await context
-                      .read<ProjetoService>()
-                      .excluirParticipanteProjeto(widget.projeto, participante);
-                },
-                child: Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 15),
-                    child: ListTile(
-                        trailing: const Icon(Icons.arrow_back_ios_new),
-                        leading: Container(
-                            width: 50,
-                            height: 50,
-                            clipBehavior: Clip.antiAlias,
-                            decoration:
-                                const BoxDecoration(shape: BoxShape.circle),
-                            child: participante.photo != null &&
-                                    participante.photo != ""
-                                ? Image.network(participante.photo as String,
-                                    fit: BoxFit.cover)
-                                : Image.asset("imagens/logo_sem_nome.png",
-                                    fit: BoxFit.cover)),
-                        subtitle: Text(participante.email),
-                        title: Text(participante.name,
-                            textAlign: TextAlign.start))),
-                background: Container(
-                    color: Colors.red,
-                    margin: const EdgeInsets.symmetric(horizontal: 15),
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                        margin: const EdgeInsets.only(right: 20),
-                        child: const Text("Excluir",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)))),
-              ),
-            );
-          }).toList(),
-        );
-      },
-    );
+              return Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Dismissible(
+                      key: UniqueKey(),
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (_) async {
+                        await context
+                            .read<ProjetoService>()
+                            .excluirParticipanteProjeto(
+                                widget.projeto, participante);
+                      },
+                      child: Card(
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
+                          child: ListTile(
+                              trailing: const Icon(Icons.arrow_back_ios_new),
+                              leading: Container(
+                                  width: 50,
+                                  height: 50,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle),
+                                  child: participante.photo != null && participante.photo != ""
+                                      ? Image.network(participante.photo as String,
+                                          fit: BoxFit.cover)
+                                      : Image.asset("imagens/logo_sem_nome.png",
+                                          fit: BoxFit.cover)),
+                              subtitle: Text(participante.email),
+                              title: Text(participante.name,
+                                  textAlign: TextAlign.start))),
+                      background: Container(
+                          color: Colors.red,
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                              margin: const EdgeInsets.only(right: 20),
+                              child: const Text("Excluir",
+                                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))))));
+            }).toList(),
+          );
+        });
   }
 
   adicionarParticipante() async {

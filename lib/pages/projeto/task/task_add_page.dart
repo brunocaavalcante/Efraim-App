@@ -176,54 +176,54 @@ class _TaskAddPageState extends State<TaskAddPage> {
         shrinkWrap: true,
         itemCount: participantes.length,
         itemBuilder: (context, index) {
-          return Container(
-            height: 60,
-            decoration: const BoxDecoration(
-                border: Border(bottom: BorderSide(color: Color(0xFFCFD8DC)))),
-            padding: const EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Align(
-                  alignment: const AlignmentDirectional(0, 0),
-                  child: Container(
-                      width: 50,
-                      height: 50,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(shape: BoxShape.circle),
-                      child: participantes[index].photo != null
-                          ? Image.network('https://picsum.photos/seed/855/600',
-                              fit: BoxFit.cover)
-                          : Image.asset("imagens/logo_sem_nome.png",
-                              fit: BoxFit.cover)),
-                ),
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(1),
-                      bottomRight: Radius.circular(1),
-                      topLeft: Radius.circular(0),
-                      topRight: Radius.circular(1),
-                    ),
-                    child: CheckboxListTile(
-                      value: participantes[index].check ?? false,
-                      onChanged: (newValue) {
-                        setState(() => participantes[index].check = newValue);
-                      },
-                      title: Text(
-                        participantes[index].name ?? "",
-                        textAlign: TextAlign.start,
-                      ),
-                      controlAffinity: ListTileControlAffinity.trailing,
-                      contentPadding:
-                          const EdgeInsetsDirectional.fromSTEB(10, 0, 30, 0),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+          return Card(
+              elevation: 5,
+              child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: const AlignmentDirectional(0, 0),
+                          child: Container(
+                              width: 50,
+                              height: 50,
+                              clipBehavior: Clip.antiAlias,
+                              decoration:
+                                  const BoxDecoration(shape: BoxShape.circle),
+                              child: participantes[index].photo != null
+                                  ? Image.network(
+                                      participantes[index].photo as String,
+                                      fit: BoxFit.cover)
+                                  : Image.asset("imagens/logo_sem_nome.png",
+                                      fit: BoxFit.cover)),
+                        ),
+                        Expanded(
+                            child: ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(1),
+                                  bottomRight: Radius.circular(1),
+                                  topLeft: Radius.circular(0),
+                                  topRight: Radius.circular(1),
+                                ),
+                                child: CheckboxListTile(
+                                  value: participantes[index].check ?? false,
+                                  onChanged: (newValue) {
+                                    setState(() =>
+                                        participantes[index].check = newValue);
+                                  },
+                                  title: Text(
+                                    participantes[index].name ?? "",
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  controlAffinity:
+                                      ListTileControlAffinity.trailing,
+                                  contentPadding:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          10, 0, 30, 0),
+                                )))
+                      ])));
         });
   }
 }

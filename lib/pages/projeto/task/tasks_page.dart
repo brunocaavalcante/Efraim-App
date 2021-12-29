@@ -57,21 +57,26 @@ class _TasksPageState extends State<TasksPage> {
             data["id"] = document.id;
             var participante = Usuario().toEntity(data);
             participantes.add(participante);
-
-            return Container(
-              decoration: const BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFCFD8DC)))),
-              child: ExpansionTile(
-                  leading: const Icon(Icons.account_circle_rounded,
-                      color: Colors.blueGrey, size: 50),
-                  title: Text(participante.name),
-                  children: [
-                    Container(
-                        color: Colors.grey[100],
-                        height: MediaQuery.of(context).size.height * 0.30,
-                        child: getTasks(participante))
-                  ]),
-            );
+            return Card(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                child: ExpansionTile(
+                    leading: Container(
+                        width: 50,
+                        height: 50,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
+                        child: participante.photo != null &&
+                                participante.photo != ""
+                            ? Image.network(participante.photo as String,
+                                fit: BoxFit.cover)
+                            : Image.asset("imagens/logo_sem_nome.png",
+                                fit: BoxFit.cover)),
+                    title: Text(participante.name),
+                    children: [
+                      Container(
+                          height: MediaQuery.of(context).size.height * 0.30,
+                          child: getTasks(participante))
+                    ]));
           }).toList(),
         );
       },
@@ -140,7 +145,8 @@ class _TasksPageState extends State<TasksPage> {
                         widget.projeto.id, participante.id, task);
                   },
                   child: Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      elevation: 5,
+                      margin: const EdgeInsets.only(right: 5, top: 5),
                       child: Theme(
                           data: ThemeData(
                             checkboxTheme: CheckboxThemeData(

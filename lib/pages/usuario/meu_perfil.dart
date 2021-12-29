@@ -187,9 +187,9 @@ class _MeuPerfilState extends State<MeuPerfil> {
                   child:
                       widget.usuario.photo != null && widget.usuario.photo != ''
                           ? Image.network(widget.usuario.photo as String,
-                              fit: BoxFit.contain)
+                              fit: BoxFit.cover)
                           : Image.asset("imagens/add-photo-back-white.png",
-                              fit: BoxFit.contain))),
+                              fit: BoxFit.cover))),
           task != null ? buildUploadStatus(task!) : Container()
         ]));
   }
