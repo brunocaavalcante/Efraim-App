@@ -105,7 +105,7 @@ class _CadastroProjetoPageState extends State<CadastroProjetoPage> {
       projeto.dataFinal = DateFormat('dd/MM/yyyy').parse(dataFim.text);
       projeto.dataCadastro = DateTime.now();
       projeto.responsavel = Usuario();
-      projeto.responsavel!.auth_id = auth.currentUser!.uid;
+      projeto.responsavel!.id = auth.currentUser!.uid;
       projeto.responsavel!.name = auth.currentUser!.displayName;
       salvar(projeto);
       Navigator.pop(context);

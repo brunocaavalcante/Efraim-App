@@ -24,7 +24,7 @@ class _TasksPageState extends State<TasksPage> {
     return Column(
       children: <Widget>[
         addTask(),
-        Container(
+        SizedBox(
             height: MediaQuery.of(context).size.height * 0.67,
             child: getParticipantesTasks())
       ],
@@ -57,26 +57,29 @@ class _TasksPageState extends State<TasksPage> {
             data["id"] = document.id;
             var participante = Usuario().toEntity(data);
             participantes.add(participante);
-            return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                child: ExpansionTile(
-                    leading: Container(
-                        width: 50,
-                        height: 50,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: const BoxDecoration(shape: BoxShape.circle),
-                        child: participante.photo != null &&
-                                participante.photo != ""
-                            ? Image.network(participante.photo as String,
-                                fit: BoxFit.cover)
-                            : Image.asset("imagens/logo_sem_nome.png",
-                                fit: BoxFit.cover)),
-                    title: Text(participante.name),
-                    children: [
-                      Container(
-                          height: MediaQuery.of(context).size.height * 0.30,
-                          child: getTasks(participante))
-                    ]));
+            return Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    child: ExpansionTile(
+                        leading: Container(
+                            width: 50,
+                            height: 50,
+                            clipBehavior: Clip.antiAlias,
+                            decoration:
+                                const BoxDecoration(shape: BoxShape.circle),
+                            child: participante.photo != null &&
+                                    participante.photo != ""
+                                ? Image.network(participante.photo as String,
+                                    fit: BoxFit.cover)
+                                : Image.asset("imagens/logo_sem_nome.png",
+                                    fit: BoxFit.cover)),
+                        title: Text(participante.name),
+                        children: [
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.30,
+                              child: getTasks(participante))
+                        ])));
           }).toList(),
         );
       },

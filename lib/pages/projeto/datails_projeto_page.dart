@@ -1,5 +1,5 @@
 import 'package:app_flutter/models/projeto.dart';
-import 'package:app_flutter/pages/projeto/caixa_projeto_page.dart';
+import 'package:app_flutter/pages/projeto/caixa/caixa_projeto_page.dart';
 import 'package:app_flutter/pages/projeto/home_projeto_page.dart';
 import 'package:app_flutter/pages/projeto/projeto_participantes_page.dart';
 import 'package:app_flutter/pages/projeto/task/tasks_page.dart';

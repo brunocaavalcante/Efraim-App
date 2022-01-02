@@ -192,7 +192,8 @@ class _TaskAddPageState extends State<TaskAddPage> {
                               clipBehavior: Clip.antiAlias,
                               decoration:
                                   const BoxDecoration(shape: BoxShape.circle),
-                              child: participantes[index].photo != null
+                              child: participantes[index].photo != null &&
+                                      participantes[index].photo != ""
                                   ? Image.network(
                                       participantes[index].photo as String,
                                       fit: BoxFit.cover)

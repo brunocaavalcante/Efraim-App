@@ -50,18 +50,8 @@ class UserService extends ChangeNotifier {
         return "";
       });
 
-  Future<Usuario> obterUsuarioPorEmail(String email) async {
-    Usuario user = Usuario();
-    await users
-        .where('email', isEqualTo: email)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        user = Usuario().toEntity(data);
-      });
-    });
-    return user;
+  Future<QuerySnapshot<Object?>> obterUsuarioPorEmail(String email) async {
+    return users.where('email', isEqualTo: email).get();
   }
 
   registrar(Usuario usuario) async {

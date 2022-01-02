@@ -70,7 +70,7 @@ class _CaixaProjetoPageState extends State<CaixaProjetoPage> {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               itemMenu("imagens/historico.png", "Histórico", 0.08),
               itemMenu("imagens/deposito.png", "Depósito", 0.08),
-              itemMenu("imagens/saque.png", "Saque", 0.09)
+              itemMenu("imagens/saque.png", "Saque", 0.08)
             ]),
             const SizedBox(height: 30),
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -82,11 +82,62 @@ class _CaixaProjetoPageState extends State<CaixaProjetoPage> {
 
   itemMenu(String image, String text, double size) {
     return Column(children: [
-      Container(
-          height: MediaQuery.of(context).size.height * size,
-          margin: const EdgeInsets.only(top: 10),
-          child: Image.asset(image, fit: BoxFit.fitHeight)),
+      GestureDetector(
+          onTap: actionItemMenu(text),
+          child: Container(
+              height: MediaQuery.of(context).size.height * size,
+              margin: const EdgeInsets.only(top: 10),
+              child: Image.asset(image, fit: BoxFit.fitHeight))),
       Text(text, style: const TextStyle(fontSize: 20))
     ]);
   }
+
+  actionItemMenu(String action) {
+    switch (action) {
+      case "Histórico":
+        return goToHistoricoPage();
+      case "Depósito":
+        return showAlertDeposito();
+      case "Saque":
+        return showAlertSaque();
+      case "Relatório":
+        return goToRelatorioPage();
+    }
+  }
+
+  showAlertDeposito() {
+    /*return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Adicionar Participante'),
+        content: Form(key: formKey, child: fieldEmail()),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancelar'),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () async {
+              if (formKey.currentState!.validate()) {
+                if (await emailExistente()) {
+                  adicionarParticipante();
+                  Navigator.pop(context, 'OK');
+                } else {
+                  AlertService.showAlert("Alerta!",
+                      "Email não cadastrado, por favor verifique.", context);
+                }
+              }
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );*/
+  }
+
+  showAlertSaque() {}
+
+  goToHistoricoPage() {}
+
+  goToRelatorioPage() {}
 }

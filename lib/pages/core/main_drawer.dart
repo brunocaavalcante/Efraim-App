@@ -43,7 +43,7 @@ class _MainDrawerState extends State<MainDrawer> {
                           child: auth.usuario?.photoURL != null
                               ? Image.network(auth.usuario?.photoURL as String,
                                   fit: BoxFit.cover)
-                              : Image.asset("imagens/logo_sem_nome.png",
+                              : Image.asset("imagens/user-menu-photo.png",
                                   fit: BoxFit.cover)),
                       Container(
                           margin: const EdgeInsets.only(

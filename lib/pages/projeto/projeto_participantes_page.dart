@@ -38,9 +38,16 @@ class _ParticipantePageState extends State<ParticipantePage> {
         });
   }
 
-  emailExistente() async {
-    user = await context.read<UserService>().obterUsuarioPorEmail(email.text);
-    return user.email != null;
+  Future<bool> emailExistente() async {
+    var result =
+        await context.read<UserService>().obterUsuarioPorEmail(email.text);
+    if (result.size > 0) {
+      user =
+          Usuario().toEntity(result.docs.first.data() as Map<String, dynamic>);
+      user.id = result.docs.first.id;
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -71,32 +78,31 @@ class _ParticipantePageState extends State<ParticipantePage> {
 
   showAlertCadastroParticipante() {
     return showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Adicionar Participante'),
-        content: Form(key: formKey, child: fieldEmail()),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancelar'),
-            child: const Text('Cancelar'),
-          ),
-          TextButton(
-            onPressed: () async {
-              if (formKey.currentState!.validate()) {
-                if (await emailExistente()) {
-                  adicionarParticipante();
-                  Navigator.pop(context, 'OK');
-                } else {
-                  AlertService.showAlert("Alerta!",
-                      "Email não cadastrado, por favor verifique.", context);
-                }
-              }
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+                title: const Text('Adicionar Participante'),
+                content: Form(key: formKey, child: fieldEmail()),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancelar'),
+                    child: const Text('Cancelar'),
+                  ),
+                  TextButton(
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          if (await emailExistente()) {
+                            adicionarParticipante();
+                            Navigator.pop(context, 'OK');
+                          } else {
+                            AlertService.showAlert(
+                                "Alerta!",
+                                "Email não cadastrado, por favor verifique.",
+                                context);
+                          }
+                        }
+                      },
+                      child: const Text('OK'))
+                ]));
   }
 
   showAlertExcluirParticipante(Usuario participante) {
@@ -159,6 +165,7 @@ class _ParticipantePageState extends State<ParticipantePage> {
                                 widget.projeto, participante);
                       },
                       child: Card(
+                          elevation: 5,
                           margin: const EdgeInsets.symmetric(horizontal: 15),
                           child: ListTile(
                               trailing: const Icon(Icons.arrow_back_ios_new),

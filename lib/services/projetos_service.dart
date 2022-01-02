@@ -2,8 +2,6 @@ import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/task.dart';
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/core/custom_exception.dart';
-import 'package:app_flutter/repository/base-repository.dart';
-import 'package:app_flutter/services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -12,24 +10,8 @@ class ProjetoService extends ChangeNotifier {
       FirebaseFirestore.instance.collection('projetos');
   static const String path = "projetos";
 
-  getProjetos() async {
-    FirebaseFirestore db = await BaseRepository.get();
-    var snapshot = await db
-        .collection(path)
-        //.where('time_id', isEqualTo: timeId)
-        .get();
-
-    List<Projeto> projetos = [];
-    snapshot.docs.forEach((doc) {
-      final data = doc.data();
-      var projeto = Projeto();
-      projeto.id = doc.id;
-      projeto.titulo = data['Titulo'];
-      projeto.descricao = data['Descricao'];
-      projetos.add(projeto);
-    });
-
-    return projetos;
+  Future<QuerySnapshot<Object?>> getProjetos() async {
+    return projetos.get();
   }
 
   salvarProjeto(Projeto entity) async {
@@ -92,7 +74,8 @@ class ProjetoService extends ChangeNotifier {
     await projetos
         .doc(projeto.id)
         .collection('participantes')
-        .add(participante.toJson())
+        .doc(participante.id)
+        .set(participante.toJson())
         .catchError((error) => throw CustomException(
             "ocorreu um erro ao atualizar tente novamente"));
   }
@@ -108,25 +91,9 @@ class ProjetoService extends ChangeNotifier {
             "ocorreu um erro ao exluir participante tente novamente"));
   }
 
-  Future<List<Usuario>> getParticipantes(Projeto projeto) async {
-    FirebaseFirestore db = await BaseRepository.get();
-    var snapshot = await db
-        .collection(path)
-        .doc(projeto.id)
-        .collection("participantes")
-        .get();
-
-    List<Usuario> usuarios = [];
-    snapshot.docs.forEach((doc) {
-      final data = doc.data();
-      var usuario = Usuario();
-      usuario.id = doc.id;
-      usuario.name = data['Nome'];
-      usuario.email = data['Email'];
-      usuarios.add(usuario);
-    });
-
-    return usuarios;
+  Future<QuerySnapshot<Object?>> getParticipantes(Projeto projeto) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    return await projetos.doc(projeto.id).collection("participantes").get();
   }
   //END REGION PARTICIPANTES
 }

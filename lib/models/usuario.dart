@@ -15,7 +15,7 @@ class Usuario {
       'nome': name,
       'email': email,
       'telefone': telefone,
-      'auth_id': auth_id,
+      'id': id,
       'dataNascimento': dataNascimento,
       'photo': photo
     };
