@@ -1,10 +1,9 @@
 import 'package:app_flutter/models/usuario.dart';
+import 'package:app_flutter/pages/agenda/agenda_page.dart';
 import 'package:app_flutter/pages/membros/index_membro_page.dart';
 import 'package:app_flutter/pages/projeto/index_projeto_page.dart';
-import 'package:app_flutter/pages/usuario/cadastro_user.dart';
 import 'package:app_flutter/pages/usuario/meu_perfil.dart';
 import 'package:app_flutter/services/user_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 
@@ -84,10 +83,14 @@ class _MainDrawerState extends State<MainDrawer> {
                         builder: (context) => const IndexMembroPage()));
               }),
           ListTile(
-              leading: const Icon(Icons.offline_pin_rounded),
-              title:
-                  const Text("Departamentos", style: TextStyle(fontSize: 18)),
-              onTap: null),
+              leading: const Icon(Icons.view_agenda_rounded),
+              title: const Text("Agenda", style: TextStyle(fontSize: 18)),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AgendaPage()));
+              }),
           ListTile(
               leading: const Icon(Icons.person_search),
               title: const Text("Meu Perfil", style: TextStyle(fontSize: 18)),
