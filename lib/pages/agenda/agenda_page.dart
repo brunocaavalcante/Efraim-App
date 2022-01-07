@@ -69,7 +69,8 @@ class _AgendaPageState extends State<AgendaPage> {
                 } else {
                   var evento = Evento();
                   evento.descricao = _eventController.text;
-                  evento.dataEvento = selectedDay;
+                  evento.dataEvento =
+                      selectedDay.add(const Duration(hours: 12));
                   evento.dataCadastro = DateTime.now();
                   evento.responsavel = auth.currentUser!.displayName ?? '';
                   adicionarEvento(evento);
@@ -90,6 +91,7 @@ class _AgendaPageState extends State<AgendaPage> {
 
   adicionarEvento(Evento entity) async {
     await context.read<AgendaService>().adicionarEvento(entity);
+    setState(() {});
   }
 
   bodyCalendar() {

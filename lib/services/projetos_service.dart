@@ -92,7 +92,6 @@ class ProjetoService extends ChangeNotifier {
   }
 
   Future<QuerySnapshot<Object?>> getParticipantes(Projeto projeto) async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
     return await projetos.doc(projeto.id).collection("participantes").get();
   }
   //END REGION PARTICIPANTES

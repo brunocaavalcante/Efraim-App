@@ -11,12 +11,12 @@ class AppTheme {
   ThemeData defaultTheme() => ThemeData(
         primaryColor: const Color.fromRGBO(79, 88, 100, 1),
         primaryColorDark: AppColors.blue,
-        buttonColor: const Color.fromRGBO(79, 88, 100, 1),
-        accentColor: AppColors.accent,
         appBarTheme:
-            AppBarTheme(backgroundColor: const Color.fromRGBO(79, 88, 100, 1)),
+            const AppBarTheme(backgroundColor: Color.fromRGBO(79, 88, 100, 1)),
 
         //textTheme:
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        colorScheme:
+            ColorScheme.fromSwatch().copyWith(secondary: AppColors.accent),
       );
 }
