@@ -1,3 +1,4 @@
+import 'package:app_flutter/models/constantes.dart';
 import 'package:app_flutter/pages/core/main_drawer.dart';
 import 'package:app_flutter/theme/app-colors.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
+  static const styleText = TextStyle(fontSize: 15, color: Colors.grey);
+  static const titleText = TextStyle(fontSize: 17, fontWeight: FontWeight.bold);
   void _incrementCounter() {
     setState(() {
       _counter++;
@@ -23,29 +25,54 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Testando app no navegador',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ),
-      drawer: const MainDrawer(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        backgroundColor: AppColors.blue,
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: <Widget>[containerTop(), containerInfo()],
+          ),
+        ),
+        drawer:
+            const MainDrawer() // This trailing comma makes auto-formatting nicer for build methods.
+        );
+  }
+
+  containerTop() {
+    return Center(
+        child: Column(children: [
+      Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.2,
+          margin: const EdgeInsets.only(bottom: 30),
+          child: Image.asset("imagens/logo_sem_nome.png", fit: BoxFit.contain)),
+      Text('Comunidade Evangélica Efraim',
+          style: Theme.of(context).textTheme.headline5)
+    ]));
+  }
+
+  containerInfo() {
+    return Container(
+      margin: const EdgeInsets.only(top: 30),
+      height: MediaQuery.of(context).size.height * 0.5,
+      width: MediaQuery.of(context).size.width,
+      child: Column(children: [
+        ListTile(
+            title:
+                Text("Endereço:", style: Theme.of(context).textTheme.headline6),
+            subtitle: const Text(Constantes.enderecoText, style: styleText)),
+        ListTile(
+            title: Text("Dias de Culto:",
+                style: Theme.of(context).textTheme.headline6),
+            subtitle: const Text(Constantes.diasCulto, style: styleText)),
+        ListTile(
+            title:
+                Text("Versão:", style: Theme.of(context).textTheme.headline6),
+            subtitle: const Text("1.0.0 - 09/01/2022", style: styleText)),
+      ]),
     );
   }
 }

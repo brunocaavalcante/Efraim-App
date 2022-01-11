@@ -3,6 +3,7 @@ import 'package:app_flutter/models/task.dart';
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/projeto/task/task_add_page.dart';
 import 'package:app_flutter/services/projetos_service.dart';
+import 'package:app_flutter/theme/app-colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
@@ -60,8 +61,13 @@ class _TasksPageState extends State<TasksPage> {
             return Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 child: Card(
+                    color: AppColors.cinzaEscuro,
                     margin: const EdgeInsets.symmetric(horizontal: 15),
                     child: ExpansionTile(
+                        trailing: const Icon(
+                          Icons.arrow_drop_down_circle_outlined,
+                          color: Colors.white,
+                        ),
                         leading: Container(
                             width: 50,
                             height: 50,
@@ -74,7 +80,10 @@ class _TasksPageState extends State<TasksPage> {
                                     fit: BoxFit.cover)
                                 : Image.asset("imagens/logo_sem_nome.png",
                                     fit: BoxFit.cover)),
-                        title: Text(participante.name),
+                        title: Text(
+                          participante.name,
+                          style: const TextStyle(color: Colors.white),
+                        ),
                         children: [
                           SizedBox(
                               height: MediaQuery.of(context).size.height * 0.30,

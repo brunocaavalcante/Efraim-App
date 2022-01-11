@@ -16,8 +16,6 @@ class IndexProjetoPage extends StatefulWidget {
 }
 
 class _home_projeto_pageState extends State<IndexProjetoPage> {
-  final Stream<QuerySnapshot> _projetoStream =
-      FirebaseFirestore.instance.collection('projetos').snapshots();
   FirebaseAuth auth = FirebaseAuth.instance;
 
   mostrarDetalhes(Projeto projeto) {
@@ -122,12 +120,13 @@ class _home_projeto_pageState extends State<IndexProjetoPage> {
   lista() {
     return FutureBuilder(
         future: getLista(),
-        initialData: [],
+        initialData: const [],
         builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData)
+          if (snapshot.hasData) {
             return createProjetosListView(context, snapshot);
-          else
+          } else {
             return const CircularProgressIndicator();
+          }
         });
   }
 }

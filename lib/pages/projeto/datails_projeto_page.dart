@@ -4,6 +4,7 @@ import 'package:app_flutter/pages/projeto/home_projeto_page.dart';
 import 'package:app_flutter/pages/projeto/projeto_participantes_page.dart';
 import 'package:app_flutter/pages/projeto/task/tasks_page.dart';
 import 'package:app_flutter/theme/app-colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DatailsProjetoPage extends StatefulWidget {
@@ -17,13 +18,31 @@ class DatailsProjetoPage extends StatefulWidget {
 class _DatailsProjetoPageState extends State<DatailsProjetoPage> {
   int _currentIndex = 0;
   List<Widget> telas = [];
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             elevation: 0.0,
-            title: Text(widget.projeto.titulo) //remove borda do appbar
+            toolbarHeight: 60,
+            title: ListTile(
+              title: Text(
+                widget.projeto.titulo,
+                style: const TextStyle(color: Colors.white),
+              ),
+              trailing: Container(
+                  width: 45,
+                  height: 45,
+                  margin: const EdgeInsets.only(top: 15, right: 10, bottom: 5),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
+                  child: auth.currentUser?.photoURL != null
+                      ? Image.network(auth.currentUser?.photoURL as String,
+                          fit: BoxFit.cover)
+                      : Image.asset("imagens/user-menu-photo.png",
+                          fit: BoxFit.cover)),
+            ) //remove borda do appbar
             ),
         body: returnView(),
         bottomNavigationBar: returnNavigatorBarBottom());
@@ -59,7 +78,7 @@ class _DatailsProjetoPageState extends State<DatailsProjetoPage> {
     telas.add(HomeProjetoPage(projeto: widget.projeto));
     telas.add(ParticipantePage(projeto: widget.projeto));
     telas.add(TasksPage(projeto: widget.projeto));
-    telas.add(const CaixaProjetoPage());
+    telas.add(CaixaProjetoPage(projeto: widget.projeto));
     return telas[_currentIndex];
   }
 }

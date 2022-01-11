@@ -1,8 +1,12 @@
+import 'package:app_flutter/models/projeto.dart';
+import 'package:app_flutter/pages/core/date_ultils.dart';
+import 'package:app_flutter/pages/projeto/caixa/operacao_page.dart';
 import 'package:app_flutter/theme/app-colors.dart';
 import 'package:flutter/material.dart';
 
 class CaixaProjetoPage extends StatefulWidget {
-  const CaixaProjetoPage({Key? key}) : super(key: key);
+  Projeto projeto;
+  CaixaProjetoPage({Key? key, required this.projeto}) : super(key: key);
 
   @override
   _CaixaProjetoPageState createState() => _CaixaProjetoPageState();
@@ -19,7 +23,7 @@ class _CaixaProjetoPageState extends State<CaixaProjetoPage> {
 
   projetoDetail() {
     return Column(
-        children: [containerTop(), containerSaldo(), containerMenu()]);
+        children: [containerTop(), containerSaqueDeposito(), containerMenu()]);
   }
 
   containerTop() {
@@ -27,117 +31,98 @@ class _CaixaProjetoPageState extends State<CaixaProjetoPage> {
       height: MediaQuery.of(context).size.height * 0.15,
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.only(top: 50),
+      padding: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
           color: AppColors.cinzaEscuro,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(25.0),
             bottomRight: Radius.circular(25.0),
           )),
-      child: const Text(
-        "CAIXA",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
-      ),
+      child: containerSaldo(),
     );
   }
 
   containerSaldo() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.94,
-      height: MediaQuery.of(context).size.height * 0.15,
-      margin: const EdgeInsets.only(bottom: 30),
-      padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(25.0))),
-      child: const Text("Saldo: 2000,00",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-    );
+        width: 100,
+        height: 100,
+        margin: const EdgeInsets.only(left: 15),
+        child: ListTile(
+          title: const Text("Saldo: 2000,00",
+              style: TextStyle(fontSize: 30, color: Colors.white)),
+          subtitle: Text(DateUltils.formatarData(DateTime.now()),
+              style: const TextStyle(color: Colors.white)),
+        ));
+  }
+
+  containerSaqueDeposito() {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+      GestureDetector(
+          onTap: () => goToOperacaoPage(1),
+          child: const SizedBox(
+              width: 160,
+              child: Card(
+                  child: ListTile(
+                      title: Text("Deposito",
+                          style: TextStyle(color: Colors.green)),
+                      leading:
+                          Icon(Icons.attach_money, color: Colors.green))))),
+      GestureDetector(
+          onTap: () => goToOperacaoPage(2),
+          child: const SizedBox(
+              width: 160,
+              child: Card(
+                  child: ListTile(
+                      title: Text("Saque", style: TextStyle(color: Colors.red)),
+                      leading: Icon(Icons.attach_money, color: Colors.red)))))
+    ]);
   }
 
   containerMenu() {
     return Container(
         width: MediaQuery.of(context).size.width * 0.94,
-        height: MediaQuery.of(context).size.height * 0.40,
+        height: MediaQuery.of(context).size.height * 0.50,
+        margin: const EdgeInsets.only(top: 20),
         padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-            color: Colors.white,
+        decoration: BoxDecoration(
+            color: AppColors.cinzaEscuro,
             borderRadius: BorderRadius.all(Radius.circular(25.0))),
         child: Column(
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              itemMenu("imagens/historico.png", "Histórico", 0.08),
-              itemMenu("imagens/deposito.png", "Depósito", 0.08),
-              itemMenu("imagens/saque.png", "Saque", 0.08)
-            ]),
-            const SizedBox(height: 30),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              itemMenu("imagens/report.png", "Relatório", 0.08),
-            ])
+            const Text("Histórico",
+                style: TextStyle(color: Colors.white, fontSize: 20)),
+            itemHistorico(),
           ],
         ));
   }
 
-  itemMenu(String image, String text, double size) {
-    return Column(children: [
-      GestureDetector(
-          onTap: actionItemMenu(text),
-          child: Container(
-              height: MediaQuery.of(context).size.height * size,
-              margin: const EdgeInsets.only(top: 10),
-              child: Image.asset(image, fit: BoxFit.fitHeight))),
-      Text(text, style: const TextStyle(fontSize: 20))
-    ]);
+  itemHistorico() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(bottom: 10, top: 10),
+      child: Card(
+          child: ListTile(
+              trailing: Text(
+                '+ RS 20,00',
+                style: TextStyle(color: Colors.green),
+              ),
+              leading: Container(
+                  width: 50,
+                  height: 50,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
+                  child: Image.asset("imagens/logo_sem_nome.png",
+                      fit: BoxFit.cover)),
+              subtitle: Text(DateUltils.formatarData(DateTime.now())),
+              title: Text("Bruno Cavalcante", textAlign: TextAlign.start))),
+    );
   }
 
-  actionItemMenu(String action) {
-    switch (action) {
-      case "Histórico":
-        return goToHistoricoPage();
-      case "Depósito":
-        return showAlertDeposito();
-      case "Saque":
-        return showAlertSaque();
-      case "Relatório":
-        return goToRelatorioPage();
-    }
+  goToOperacaoPage(int tipoOperacao) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => OperacaoPage(
+                projeto: widget.projeto, tipoOperacao: tipoOperacao)));
   }
-
-  showAlertDeposito() {
-    /*return showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Adicionar Participante'),
-        content: Form(key: formKey, child: fieldEmail()),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancelar'),
-            child: const Text('Cancelar'),
-          ),
-          TextButton(
-            onPressed: () async {
-              if (formKey.currentState!.validate()) {
-                if (await emailExistente()) {
-                  adicionarParticipante();
-                  Navigator.pop(context, 'OK');
-                } else {
-                  AlertService.showAlert("Alerta!",
-                      "Email não cadastrado, por favor verifique.", context);
-                }
-              }
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );*/
-  }
-
-  showAlertSaque() {}
-
-  goToHistoricoPage() {}
-
-  goToRelatorioPage() {}
 }
