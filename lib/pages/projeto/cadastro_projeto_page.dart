@@ -108,7 +108,7 @@ class _CadastroProjetoPageState extends State<CadastroProjetoPage> {
       projeto.responsavel!.id = auth.currentUser!.uid;
       projeto.responsavel!.name = auth.currentUser!.displayName;
       salvar(projeto);
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     } on CustomException catch (e) {
       setState(() => loading = false);
       ScaffoldMessenger.of(context)

@@ -63,32 +63,36 @@ class _TasksPageState extends State<TasksPage> {
                 child: Card(
                     color: AppColors.cinzaEscuro,
                     margin: const EdgeInsets.symmetric(horizontal: 15),
-                    child: ExpansionTile(
-                        trailing: const Icon(
-                          Icons.arrow_drop_down_circle_outlined,
-                          color: Colors.white,
-                        ),
-                        leading: Container(
-                            width: 50,
-                            height: 50,
-                            clipBehavior: Clip.antiAlias,
-                            decoration:
-                                const BoxDecoration(shape: BoxShape.circle),
-                            child: participante.photo != null &&
-                                    participante.photo != ""
-                                ? Image.network(participante.photo as String,
-                                    fit: BoxFit.cover)
-                                : Image.asset("imagens/logo_sem_nome.png",
-                                    fit: BoxFit.cover)),
-                        title: Text(
-                          participante.name,
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        children: [
-                          SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.30,
-                              child: getTasks(participante))
-                        ])));
+                    child: Container(
+                        padding: const EdgeInsets.all(6),
+                        child: ExpansionTile(
+                            trailing: const Icon(
+                              Icons.arrow_drop_down_circle_outlined,
+                              color: Colors.white,
+                            ),
+                            leading: Container(
+                                width: 50,
+                                height: 50,
+                                clipBehavior: Clip.antiAlias,
+                                decoration:
+                                    const BoxDecoration(shape: BoxShape.circle),
+                                child: participante.photo != null &&
+                                        participante.photo != ""
+                                    ? Image.network(
+                                        participante.photo as String,
+                                        fit: BoxFit.cover)
+                                    : Image.asset("imagens/logo_sem_nome.png",
+                                        fit: BoxFit.cover)),
+                            title: Text(
+                              participante.name,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            children: [
+                              SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.30,
+                                  child: getTasks(participante))
+                            ]))));
           }).toList(),
         );
       },

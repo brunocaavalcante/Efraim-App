@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_flutter/models/projeto.dart';
+import 'package:app_flutter/pages/projeto/index_projeto_page.dart';
 import 'package:app_flutter/services/file_service.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/theme/app-colors.dart';
@@ -134,7 +135,8 @@ class _HomeProjetoState extends State<HomeProjetoPage> {
                 await context
                     .read<ProjetoService>()
                     .excluirProjeto(widget.projeto);
-                Navigator.pop(context, 'OK');
+                Navigator.pop(context);
+                Navigator.pop(context, true);
               },
               child: const Text('OK')),
         ],

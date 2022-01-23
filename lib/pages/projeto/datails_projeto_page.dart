@@ -1,4 +1,5 @@
 import 'package:app_flutter/models/projeto.dart';
+import 'package:app_flutter/pages/indisponivel_page.dart';
 import 'package:app_flutter/pages/projeto/caixa/caixa_projeto_page.dart';
 import 'package:app_flutter/pages/projeto/home_projeto_page.dart';
 import 'package:app_flutter/pages/projeto/projeto_participantes_page.dart';
@@ -78,7 +79,7 @@ class _DatailsProjetoPageState extends State<DatailsProjetoPage> {
     telas.add(HomeProjetoPage(projeto: widget.projeto));
     telas.add(ParticipantePage(projeto: widget.projeto));
     telas.add(TasksPage(projeto: widget.projeto));
-    telas.add(CaixaProjetoPage(projeto: widget.projeto));
+    telas.add(const IndisponivelPage());
     return telas[_currentIndex];
   }
 }

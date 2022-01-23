@@ -1,3 +1,4 @@
+import 'package:app_flutter/models/opracao_caixa.dart';
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/task.dart';
 import 'package:app_flutter/models/usuario.dart';
@@ -95,4 +96,17 @@ class ProjetoService extends ChangeNotifier {
     return await projetos.doc(projeto.id).collection("participantes").get();
   }
   //END REGION PARTICIPANTES
+
+  //REGION CAIXA
+  Future<void> addOperacao(Projeto projeto, OperacaoCaixa operacaoCaixa) async {
+    await projetos
+        .doc(projeto.id)
+        .collection('caixa')
+        .doc("operacoes")
+        .collection("historico")
+        .add(operacaoCaixa.toJson())
+        .catchError((error) => throw CustomException(
+            "ocorreu um erro ao atualizar tente novamente"));
+  }
+  //END REGION CAIXA
 }

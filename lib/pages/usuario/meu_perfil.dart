@@ -81,95 +81,115 @@ class _MeuPerfilState extends State<MeuPerfil> {
   }
 
   Widget fieldName() {
-    return TextFormField(
-      decoration: const InputDecoration(labelText: 'Nome:'),
-      controller: nome,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "Campo obrigatório";
-        }
-        return null;
-      },
-    );
+    return Padding(
+        padding: const EdgeInsets.all(24),
+        child: TextFormField(
+          decoration: const InputDecoration(
+              labelText: 'Nome:', border: OutlineInputBorder()),
+          controller: nome,
+          validator: (value) {
+            if (value!.isEmpty) {
+              return "Campo obrigatório";
+            }
+            return null;
+          },
+        ));
   }
 
   Widget fieldEmail() {
-    return TextFormField(
-        decoration: const InputDecoration(labelText: 'E-mail:'),
-        controller: email,
-        keyboardType: TextInputType.emailAddress,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Campo obrigatório";
-          }
-          return null;
-        });
+    return Padding(
+        padding: const EdgeInsets.all(24),
+        child: TextFormField(
+            decoration: const InputDecoration(
+                labelText: 'E-mail:', border: OutlineInputBorder()),
+            controller: email,
+            keyboardType: TextInputType.emailAddress,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Campo obrigatório";
+              }
+              return null;
+            }));
   }
 
   Widget fieldDataNascimento() {
     var mask = MaskTextInputFormatter(mask: '##/##/####');
-    return TextFormField(
-        decoration: const InputDecoration(
-            labelText: 'Data de Nascimento:', hintText: 'dd/mm/yyyy'),
-        inputFormatters: [mask],
-        controller: dataNascimento,
-        keyboardType: TextInputType.datetime,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Campo obrigatório";
-          }
-          return null;
-        });
+    return Padding(
+        padding: const EdgeInsets.all(24),
+        child: TextFormField(
+            decoration: const InputDecoration(
+                labelText: 'Data de Nascimento:',
+                hintText: 'dd/mm/yyyy',
+                border: OutlineInputBorder()),
+            inputFormatters: [mask],
+            controller: dataNascimento,
+            keyboardType: TextInputType.datetime,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Campo obrigatório";
+              }
+              return null;
+            }));
   }
 
   Widget fieldPhone() {
     var mask = MaskTextInputFormatter(mask: '(##) # ####-####');
-    return TextFormField(
-        inputFormatters: [mask],
-        controller: telefone,
-        keyboardType: TextInputType.number,
-        decoration: const InputDecoration(
-            labelText: 'Telefone:', hintText: '(99) 9 9999-9999'),
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Campo obrigatório";
-          }
-          return null;
-        });
+    return Padding(
+        padding: const EdgeInsets.all(24),
+        child: TextFormField(
+            inputFormatters: [mask],
+            controller: telefone,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+                labelText: 'Telefone:',
+                hintText: '(99) 9 9999-9999',
+                border: OutlineInputBorder()),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Campo obrigatório";
+              }
+              return null;
+            }));
   }
 
   Widget fieldSenha() {
-    return TextFormField(
-        obscureText: true,
-        controller: senha,
-        keyboardType: TextInputType.number,
-        decoration: const InputDecoration(labelText: 'Senha:'),
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Campo obrigatório";
-          }
-          if (value.length < 6) {
-            return "Senha deve ter no minímo 6 caracteres.";
-          }
-          return null;
-        });
+    return Padding(
+        padding: const EdgeInsets.all(24),
+        child: TextFormField(
+            obscureText: true,
+            controller: senha,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+                labelText: 'Senha:', border: OutlineInputBorder()),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Campo obrigatório";
+              }
+              if (value.length < 6) {
+                return "Senha deve ter no minímo 6 caracteres.";
+              }
+              return null;
+            }));
   }
 
   Widget fieldConfirmSenha() {
-    return TextFormField(
-        obscureText: true,
-        controller: confirmSenha,
-        keyboardType: TextInputType.number,
-        decoration: const InputDecoration(labelText: 'Confirmar senha:'),
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Campo obrigatório";
-          }
-          if (value.length < 6) {
-            return "Senha deve ter no minímo 6 caracteres.";
-          }
-          return null;
-        });
+    return Padding(
+        padding: const EdgeInsets.all(24),
+        child: TextFormField(
+            obscureText: true,
+            controller: confirmSenha,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+                labelText: 'Confirmar senha:', border: OutlineInputBorder()),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "Campo obrigatório";
+              }
+              if (value.length < 6) {
+                return "Senha deve ter no minímo 6 caracteres.";
+              }
+              return null;
+            }));
   }
 
   fieldPhoto() {

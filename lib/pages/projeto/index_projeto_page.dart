@@ -18,18 +18,19 @@ class IndexProjetoPage extends StatefulWidget {
 class _home_projeto_pageState extends State<IndexProjetoPage> {
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  mostrarDetalhes(Projeto projeto) {
-    Navigator.push(
+  mostrarDetalhes(Projeto projeto) async {
+    var result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => DatailsProjetoPage(projeto: projeto),
       ),
     );
+    if (result != null && result) setState(() {});
   }
 
   @override
   void initState() {
-    lista();
+    getLista();
     super.initState();
   }
 
@@ -41,11 +42,12 @@ class _home_projeto_pageState extends State<IndexProjetoPage> {
       ),
       body: lista(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          var result = await Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => const CadastroProjetoPage()));
+          if (result != null && result) setState(() {});
         },
         backgroundColor: AppColors.blue,
         child: const Icon(Icons.add),
