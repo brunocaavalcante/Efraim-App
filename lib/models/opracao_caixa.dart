@@ -4,6 +4,7 @@ class OperacaoCaixa {
   DateTime? dataOperacao;
   String? idResposavelCadastro;
   String? idContribuinte;
+  String? nomeContribuinte;
   double? valor;
   int? tipoOperacao;
 

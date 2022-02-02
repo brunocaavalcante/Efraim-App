@@ -74,6 +74,10 @@ class _IndexMembroPageState extends State<IndexMembroPage> {
     );
   }
 
+  excluirMembro(String id) {
+    //verificar permissão
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,12 +86,8 @@ class _IndexMembroPageState extends State<IndexMembroPage> {
         title: const Text("Membros", style: TextStyle(fontSize: 25)),
       ),
       body: getMembros(),
-      backgroundColor: AppColors.cinzaEscuro,
-      floatingActionButton: FloatingActionButton(
-        onPressed: null,
-        backgroundColor: AppColors.blue,
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      backgroundColor: AppColors
+          .cinzaEscuro, // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

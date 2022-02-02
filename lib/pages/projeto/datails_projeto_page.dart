@@ -79,7 +79,8 @@ class _DatailsProjetoPageState extends State<DatailsProjetoPage> {
     telas.add(HomeProjetoPage(projeto: widget.projeto));
     telas.add(ParticipantePage(projeto: widget.projeto));
     telas.add(TasksPage(projeto: widget.projeto));
-    telas.add(const IndisponivelPage());
+    telas.add(CaixaProjetoPage(projeto: widget.projeto));
+    //telas.add(const IndisponivelPage());
     return telas[_currentIndex];
   }
 }

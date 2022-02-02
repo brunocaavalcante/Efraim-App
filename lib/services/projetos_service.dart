@@ -1,3 +1,4 @@
+import 'package:app_flutter/models/caixa.dart';
 import 'package:app_flutter/models/opracao_caixa.dart';
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/task.dart';
@@ -16,8 +17,12 @@ class ProjetoService extends ChangeNotifier {
   }
 
   salvarProjeto(Projeto entity) async {
-    await projetos.add(entity.toJson()).catchError((error) =>
-        throw CustomException("ocorreu um erro ao cadastrar tente novamente"));
+    DocumentReference docRef = await projetos.add(entity.toJson()).catchError(
+        (error) => throw CustomException(
+            "ocorreu um erro ao cadastrar tente novamente"));
+
+    entity.id = docRef.id;
+    addCaixa(entity);
   }
 
   updateProjeto(Projeto entity) async {
@@ -98,15 +103,36 @@ class ProjetoService extends ChangeNotifier {
   //END REGION PARTICIPANTES
 
   //REGION CAIXA
+  Future<void> addCaixa(Projeto entity) async {
+    var caixa = Caixa();
+    caixa.saldo = 0;
+    projetos.doc(entity.id).collection("caixa").add(caixa.toJson()).catchError(
+        (error) => throw CustomException(
+            "ocorreu um erro ao adicionar tente novamente"));
+  }
+
   Future<void> addOperacao(Projeto projeto, OperacaoCaixa operacaoCaixa) async {
     await projetos
         .doc(projeto.id)
         .collection('caixa')
-        .doc("operacoes")
+        .doc(projeto.caixa.id)
         .collection("historico")
         .add(operacaoCaixa.toJson())
         .catchError((error) => throw CustomException(
             "ocorreu um erro ao atualizar tente novamente"));
+  }
+
+  Future<QuerySnapshot<Object?>> getCaixa(Projeto entity) async {
+    return projetos.doc(entity.id).collection("caixa").get();
+  }
+
+  Future<QuerySnapshot<Object?>> getHitorico(Projeto entity) async {
+    return projetos
+        .doc(entity.id)
+        .collection("caixa")
+        .doc(entity.caixa.id)
+        .collection("historico")
+        .get();
   }
   //END REGION CAIXA
 }

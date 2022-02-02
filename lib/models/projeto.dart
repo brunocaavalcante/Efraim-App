@@ -1,3 +1,4 @@
+import 'package:app_flutter/models/caixa.dart';
 import 'package:app_flutter/models/usuario.dart';
 
 class Projeto {
@@ -10,6 +11,7 @@ class Projeto {
   Usuario? responsavel;
   List<Usuario> listParticipantes = [];
   String photo = '';
+  Caixa caixa = Caixa();
 
   Map<String, Object?> toJson() {
     return {

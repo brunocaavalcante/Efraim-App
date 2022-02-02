@@ -1,18 +1,44 @@
+import 'package:app_flutter/models/caixa.dart';
+import 'package:app_flutter/models/opracao_caixa.dart';
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/core/alertService.dart';
 import 'package:app_flutter/pages/core/custom_exception.dart';
 import 'package:app_flutter/pages/projeto/caixa/check_participantes.dart';
+import 'package:app_flutter/pages/projeto/caixa/confirmacao_page.dart';
+import 'package:app_flutter/services/projetos_service.dart';
+import 'package:app_flutter/util/currency_input_formatter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:provider/src/provider.dart';
+import 'package:flutter/services.dart';
 
 class OperacaoPage extends StatefulWidget {
   Projeto projeto;
   int tipoOperacao;
   OperacaoPage({Key? key, required this.projeto, required this.tipoOperacao})
-      : super(key: key);
+      : super(key: key) {
+    obterCaixa();
+  }
+
+  obterCaixa() async {
+    QuerySnapshot<Object?> result = await ProjetoService().getCaixa(projeto);
+    for (var element in result.docs) {
+      Map<String, dynamic> data = element.data() as Map<String, dynamic>;
+      projeto.caixa = Caixa().toEntity(data);
+      projeto.caixa.id = element.id;
+    }
+    obterHistorico();
+  }
+
+  obterHistorico() async {
+    QuerySnapshot<Object?> result = await ProjetoService().getHitorico(projeto);
+    for (var element in result.docs) {
+      Map<String, dynamic> data = element.data() as Map<String, dynamic>;
+      var operacao = OperacaoCaixa().toEntity(data);
+      operacao.id = element.id;
+      projeto.caixa.historico!.add(operacao);
+    }
+  }
 
   @override
   _OperacaoPageState createState() => _OperacaoPageState();
@@ -22,6 +48,7 @@ class _OperacaoPageState extends State<OperacaoPage> {
   final formKey = GlobalKey<FormState>();
   final nome = TextEditingController();
   final valor = TextEditingController();
+  int view = 1;
   List<Usuario> participantes = <Usuario>[];
 
   @override
@@ -53,40 +80,30 @@ class _OperacaoPageState extends State<OperacaoPage> {
               ),
             ),
           )),
-      body: formOperacao(),
+      body: customView(),
       backgroundColor: const Color(0xFFEEEEEE),
     );
   }
 
-  formOperacao() {
+  containerAtribuir() {
     return SingleChildScrollView(
-      child: Form(
-        key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            fieldValor(),
-            const Text(
-              "Atribuir operação para:",
-              style: TextStyle(fontSize: 18),
-            ),
-            Container(
-                child: getParticipantes(),
-                height: MediaQuery.of(context).size.height * 0.55,
-                margin: const EdgeInsets.only(top: 20)),
-            btnSalvar()
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            "Atribuir operação para:",
+            style: TextStyle(fontSize: 30),
+          ),
+          Container(
+              child: listaMembros(), margin: const EdgeInsets.only(top: 20)),
+        ],
       ),
     );
   }
 
-  getParticipantes() {
-    Stream<QuerySnapshot> _participanteStream = FirebaseFirestore.instance
-        .collection('projetos')
-        .doc(widget.projeto.id)
-        .collection("participantes")
-        .snapshots();
+  listaMembros() {
+    Stream<QuerySnapshot> _participanteStream =
+        FirebaseFirestore.instance.collection('users').snapshots();
 
     return StreamBuilder<QuerySnapshot>(
         stream: _participanteStream,
@@ -115,38 +132,24 @@ class _OperacaoPageState extends State<OperacaoPage> {
                       margin: const EdgeInsets.symmetric(horizontal: 15),
                       child: Container(
                           padding: const EdgeInsets.all(6),
-                          child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Align(
-                                  alignment: const AlignmentDirectional(0, 0),
-                                  child: Container(
-                                      width: 50,
-                                      height: 50,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: const BoxDecoration(
-                                          shape: BoxShape.circle),
-                                      child: participante.photo != null &&
-                                              participante.photo != ""
-                                          ? Image.network(
-                                              participante.photo as String,
-                                              fit: BoxFit.cover)
-                                          : Image.asset(
-                                              "imagens/logo_sem_nome.png",
-                                              fit: BoxFit.cover)),
-                                ),
-                                Expanded(
-                                    child: ClipRRect(
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(1),
-                                          bottomRight: Radius.circular(1),
-                                          topLeft: Radius.circular(0),
-                                          topRight: Radius.circular(1),
-                                        ),
-                                        child: CheckParticipante(
-                                            participante: participante)))
-                              ]))));
+                          child: ListTile(
+                              onTap: () => goToConfirmacao(participante),
+                              leading: Container(
+                                  width: 50,
+                                  height: 50,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: const BoxDecoration(
+                                      shape: BoxShape.circle),
+                                  child: participante.photo != null &&
+                                          participante.photo != ""
+                                      ? Image.network(
+                                          participante.photo as String,
+                                          fit: BoxFit.cover)
+                                      : Image.asset("imagens/logo_sem_nome.png",
+                                          fit: BoxFit.cover)),
+                              subtitle: Text(participante.email),
+                              title: Text(participante.name,
+                                  textAlign: TextAlign.start)))));
             }).toList(),
           );
         });
@@ -173,18 +176,38 @@ class _OperacaoPageState extends State<OperacaoPage> {
             ])));
   }
 
+  btnProximo() {
+    return Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: ElevatedButton(
+            onPressed: () {
+              setState(() {
+                view = 2;
+              });
+            },
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text("Próximo", style: TextStyle(fontSize: 20))),
+              Icon(Icons.arrow_forward_ios)
+            ])));
+  }
+
   Widget fieldValor() {
-    var mask = MaskTextInputFormatter(mask: 'R\$ ##,##');
     return Padding(
         padding: const EdgeInsets.all(24),
         child: TextFormField(
-            inputFormatters: [mask],
+            inputFormatters: [
+              WhitelistingTextInputFormatter.digitsOnly,
+              CurrencyInputFormatter()
+            ],
             controller: valor,
+            style: const TextStyle(fontSize: 30),
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Valor:',
-                hintText: 'R\$ 00,00'),
+                hintText: 'R\$ 0,00',
+                hintStyle: TextStyle(fontSize: 30)),
             validator: (value) {
               if (value!.isEmpty) {
                 return "Campo obrigatório";
@@ -214,5 +237,42 @@ class _OperacaoPageState extends State<OperacaoPage> {
   addParticipanteInList(Usuario participante) {
     bool jaAdicionado = participantes.any((x) => x.id == participante.id);
     if (jaAdicionado == false) participantes.add(participante);
+  }
+
+  containerValor() {
+    return SingleChildScrollView(
+        child: Column(children: [
+      Container(
+          margin: const EdgeInsets.only(top: 40, left: 50, bottom: 70),
+          child: const Text("Qual o valor da operação?",
+              style: TextStyle(fontSize: 30))),
+      fieldValor(),
+      SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.35),
+      btnProximo()
+    ]));
+  }
+
+  Widget customView() {
+    return view == 1 ? containerValor() : containerAtribuir();
+  }
+
+  goToConfirmacao(Usuario user) {
+    var operacao = OperacaoCaixa();
+    operacao.dataCadastro = DateTime.now();
+    operacao.idContribuinte = user.id;
+    operacao.nomeContribuinte = user.name;
+    operacao.valor = double.tryParse(valor.text
+        .replaceRange(0, 3, "")
+        .replaceAll(".", "")
+        .replaceAll(",", "."));
+    operacao.tipoOperacao = widget.tipoOperacao;
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) =>
+                ConfirmacaoPage(projeto: widget.projeto, operacao: operacao)));
   }
 }
