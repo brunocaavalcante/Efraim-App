@@ -1,8 +1,10 @@
 import 'package:app_flutter/models/opracao_caixa.dart';
 import 'package:app_flutter/models/projeto.dart';
+import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/util/currency_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/src/provider.dart';
 
 class ConfirmacaoPage extends StatefulWidget {
   Projeto projeto;
@@ -48,6 +50,8 @@ class _ConfirmacaoPageState extends State<ConfirmacaoPage> {
     return Column(
       children: [
         containerHeader(),
+        containerItem(
+            "Contribuinte", widget.operacao.nomeContribuinte as String),
         containerItem("Data", formatarData(widget.operacao.dataCadastro)),
         containerItem("Tipo de operação", "Depósito"),
         btnProximo()
@@ -59,8 +63,12 @@ class _ConfirmacaoPageState extends State<ConfirmacaoPage> {
     return Padding(
         padding: const EdgeInsets.all(24.0),
         child: ElevatedButton(
-            onPressed: () {
-              setState(() {});
+            onPressed: () async {
+              await context
+                  .read<ProjetoService>()
+                  .addOperacao(widget.projeto, widget.operacao);
+              Navigator.pop(context);
+              Navigator.pop(context);
             },
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Padding(
@@ -81,10 +89,6 @@ class _ConfirmacaoPageState extends State<ConfirmacaoPage> {
               margin: const EdgeInsets.only(top: 20, bottom: 10),
               child: Text(FormatarMoeda.formatar(widget.operacao.valor),
                   style: const TextStyle(fontSize: 50))),
-          Text(
-              "Contibuinte: " +
-                  widget.operacao.nomeContribuinte.toString().toUpperCase(),
-              style: TextStyle(fontSize: 16))
         ]));
   }
 

@@ -13,6 +13,12 @@ class AppTheme {
         primaryColorDark: AppColors.blue,
         appBarTheme:
             const AppBarTheme(backgroundColor: Color.fromRGBO(79, 88, 100, 1)),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all(AppColors.cinzaEscuro),
+                textStyle:
+                    MaterialStateProperty.all(const TextStyle(fontSize: 30)))),
 
         //textTheme:
         visualDensity: VisualDensity.adaptivePlatformDensity,

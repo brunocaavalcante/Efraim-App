@@ -2,9 +2,6 @@ import 'package:app_flutter/models/caixa.dart';
 import 'package:app_flutter/models/opracao_caixa.dart';
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/usuario.dart';
-import 'package:app_flutter/pages/core/alertService.dart';
-import 'package:app_flutter/pages/core/custom_exception.dart';
-import 'package:app_flutter/pages/projeto/caixa/check_participantes.dart';
 import 'package:app_flutter/pages/projeto/caixa/confirmacao_page.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/util/currency_input_formatter.dart';
@@ -155,35 +152,16 @@ class _OperacaoPageState extends State<OperacaoPage> {
         });
   }
 
-  btnSalvar() {
-    return Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: ElevatedButton(
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                adicionarOperacao();
-              }
-            },
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(Icons.check),
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "Salvar",
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-            ])));
-  }
-
   btnProximo() {
     return Padding(
         padding: const EdgeInsets.all(24.0),
         child: ElevatedButton(
             onPressed: () {
-              setState(() {
-                view = 2;
-              });
+              if (formKey.currentState!.validate()) {
+                setState(() {
+                  view = 2;
+                });
+              }
             },
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Padding(
@@ -194,44 +172,28 @@ class _OperacaoPageState extends State<OperacaoPage> {
   }
 
   Widget fieldValor() {
-    return Padding(
-        padding: const EdgeInsets.all(24),
-        child: TextFormField(
-            inputFormatters: [
-              WhitelistingTextInputFormatter.digitsOnly,
-              CurrencyInputFormatter()
-            ],
-            controller: valor,
-            style: const TextStyle(fontSize: 30),
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'R\$ 0,00',
-                hintStyle: TextStyle(fontSize: 30)),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "Campo obrigatório";
-              }
-              return null;
-            }));
-  }
-
-  adicionarOperacao() async {
-    try {
-      if (participantes.any((x) => x.check == true)) {
-        print(participantes.length);
-        /* await context
-              .read<ProjetoService>()
-              .addOperacao(projeto, operacaoCaixa);*/
-        Navigator.pop(context);
-      } else {
-        AlertService.showAlert(
-            "Alerta!", "Nenhum participante selecionado!", context);
-      }
-    } on CustomException catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
-    }
+    return Form(
+        key: formKey,
+        child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: TextFormField(
+                inputFormatters: [
+                  WhitelistingTextInputFormatter.digitsOnly,
+                  CurrencyInputFormatter()
+                ],
+                controller: valor,
+                style: const TextStyle(fontSize: 30),
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'R\$ 0,00',
+                    hintStyle: TextStyle(fontSize: 30)),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Campo obrigatório";
+                  }
+                  return null;
+                })));
   }
 
   addParticipanteInList(Usuario participante) {
