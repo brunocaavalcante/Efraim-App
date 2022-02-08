@@ -118,6 +118,25 @@ class ProjetoService extends ChangeNotifier {
         .doc(projeto.caixa.id)
         .collection("historico")
         .add(operacaoCaixa.toJson())
+        .then((value) async => await updateValorCaixa(projeto, operacaoCaixa))
+        .catchError((error) => throw CustomException(
+            "ocorreu um erro ao atualizar tente novamente"));
+  }
+
+  Future<void> updateValorCaixa(
+      Projeto projeto, OperacaoCaixa operacaoCaixa) async {
+    if (operacaoCaixa.tipoOperacao == 1) {
+      projeto.caixa.saldo = (projeto.caixa.saldo! + operacaoCaixa.valor!);
+    } else {
+      projeto.caixa.saldo = (projeto.caixa.saldo! - operacaoCaixa.valor!);
+    }
+
+    await projetos
+        .doc(projeto.id)
+        .collection('caixa')
+        .doc(projeto.caixa.id)
+        .update({'Saldo': projeto.caixa.saldo})
+        .then((value) => null)
         .catchError((error) => throw CustomException(
             "ocorreu um erro ao atualizar tente novamente"));
   }

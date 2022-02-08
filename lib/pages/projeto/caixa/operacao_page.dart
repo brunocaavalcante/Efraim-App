@@ -13,29 +13,7 @@ class OperacaoPage extends StatefulWidget {
   Projeto projeto;
   int tipoOperacao;
   OperacaoPage({Key? key, required this.projeto, required this.tipoOperacao})
-      : super(key: key) {
-    obterCaixa();
-  }
-
-  obterCaixa() async {
-    QuerySnapshot<Object?> result = await ProjetoService().getCaixa(projeto);
-    for (var element in result.docs) {
-      Map<String, dynamic> data = element.data() as Map<String, dynamic>;
-      projeto.caixa = Caixa().toEntity(data);
-      projeto.caixa.id = element.id;
-    }
-    obterHistorico();
-  }
-
-  obterHistorico() async {
-    QuerySnapshot<Object?> result = await ProjetoService().getHitorico(projeto);
-    for (var element in result.docs) {
-      Map<String, dynamic> data = element.data() as Map<String, dynamic>;
-      var operacao = OperacaoCaixa().toEntity(data);
-      operacao.id = element.id;
-      projeto.caixa.historico!.add(operacao);
-    }
-  }
+      : super(key: key);
 
   @override
   _OperacaoPageState createState() => _OperacaoPageState();
@@ -43,7 +21,6 @@ class OperacaoPage extends StatefulWidget {
 
 class _OperacaoPageState extends State<OperacaoPage> {
   final formKey = GlobalKey<FormState>();
-  final nome = TextEditingController();
   final valor = TextEditingController();
   int view = 1;
   List<Usuario> participantes = <Usuario>[];

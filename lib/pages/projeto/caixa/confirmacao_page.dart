@@ -1,9 +1,11 @@
+import 'package:app_flutter/models/caixa.dart';
 import 'package:app_flutter/models/opracao_caixa.dart';
 import 'package:app_flutter/models/projeto.dart';
+import 'package:app_flutter/pages/core/date_ultils.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/util/currency_input_formatter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/src/provider.dart';
 
 class ConfirmacaoPage extends StatefulWidget {
@@ -11,7 +13,18 @@ class ConfirmacaoPage extends StatefulWidget {
   OperacaoCaixa operacao;
 
   ConfirmacaoPage({Key? key, required this.projeto, required this.operacao})
-      : super(key: key);
+      : super(key: key) {
+    obterCaixa();
+  }
+
+  obterCaixa() async {
+    QuerySnapshot<Object?> result = await ProjetoService().getCaixa(projeto);
+    for (var item in result.docs) {
+      Map<String, dynamic> data = item.data() as Map<String, dynamic>;
+      projeto.caixa = Caixa().toEntity(data);
+      projeto.caixa.id = item.id;
+    }
+  }
 
   @override
   _ConfirmacaoPageState createState() => _ConfirmacaoPageState();
@@ -47,13 +60,17 @@ class _ConfirmacaoPageState extends State<ConfirmacaoPage> {
   }
 
   containerView() {
+    var operacaoString =
+        widget.operacao.tipoOperacao == 1 ? "Depósito" : "Saque";
+
     return Column(
       children: [
         containerHeader(),
         containerItem(
             "Contribuinte", widget.operacao.nomeContribuinte as String),
-        containerItem("Data", formatarData(widget.operacao.dataCadastro)),
-        containerItem("Tipo de operação", "Depósito"),
+        containerItem(
+            "Data", DateUltils.formatarData(widget.operacao.dataCadastro)),
+        containerItem("Tipo de operação", operacaoString),
         btnProximo()
       ],
     );
@@ -106,20 +123,12 @@ class _ConfirmacaoPageState extends State<ConfirmacaoPage> {
               titulo,
               style: const TextStyle(fontSize: 20, color: Colors.grey),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               value,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
         ));
-  }
-
-  formatarData(DateTime? data) {
-    if (data != null) {
-      return DateFormat('dd/MM/yyyy').format(data);
-    } else {
-      return "";
-    }
   }
 }
