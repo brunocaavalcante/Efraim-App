@@ -5,6 +5,7 @@ class OperacaoCaixa {
   String? idResposavelCadastro;
   String? idContribuinte;
   String? nomeContribuinte;
+  String? photoContribuinte;
   double? valor;
   int? tipoOperacao;
 
@@ -16,7 +17,9 @@ class OperacaoCaixa {
       'IdResposavelCadastro': idResposavelCadastro,
       'IdContribuinte': idContribuinte,
       'Valor': valor,
-      'TipoOperacao': tipoOperacao
+      'TipoOperacao': tipoOperacao,
+      'PhotoContribuinte': photoContribuinte,
+      'NomeContribuinte': nomeContribuinte
     };
   }
 
@@ -24,10 +27,12 @@ class OperacaoCaixa {
     id = map['Id'];
     idContribuinte = map['IdContribuinte'] ?? '';
     idResposavelCadastro = map['IdResposavelCadastro'] ?? '';
-    dataOperacao = (map['DataOperacao']).toDate();
+    nomeContribuinte = map['NomeContribuinte'] ?? '';
     dataCadastro = (map['DataCadastro']).toDate();
     valor = map['Valor'];
     tipoOperacao = map['TipoOperacao'];
+    photoContribuinte = map['PhotoContribuinte'] ?? '';
+    nomeContribuinte = map['NomeContribuinte'] ?? '';
     return this;
   }
 }

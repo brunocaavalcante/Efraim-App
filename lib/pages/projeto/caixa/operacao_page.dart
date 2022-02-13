@@ -4,7 +4,7 @@ import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/projeto/caixa/confirmacao_page.dart';
 import 'package:app_flutter/services/projetos_service.dart';
-import 'package:app_flutter/util/currency_input_formatter.dart';
+import 'package:app_flutter/pages/core/currency_input_formatter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -202,6 +202,7 @@ class _OperacaoPageState extends State<OperacaoPage> {
     operacao.dataCadastro = DateTime.now();
     operacao.idContribuinte = user.id;
     operacao.nomeContribuinte = user.name;
+    operacao.photoContribuinte = user.photo;
     operacao.valor = double.tryParse(valor.text
         .replaceRange(0, 3, "")
         .replaceAll(".", "")
