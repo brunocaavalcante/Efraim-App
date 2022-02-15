@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/core/custom_exception.dart';
+import 'package:app_flutter/pages/core/date_ultils.dart';
 import 'package:app_flutter/services/file_service.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/src/provider.dart';
 
@@ -31,32 +31,13 @@ class _MeuPerfilState extends State<MeuPerfil> {
   bool loading = false;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     inicializarValores();
+    super.initState();
+  }
 
-    final btnSalvar = ButtonTheme(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        // ignore: deprecated_member_use
-        child: RaisedButton(
-            color: const Color.fromRGBO(79, 88, 100, 1),
-            child: const Text(
-              "Salvar",
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 16.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                editar();
-              }
-            },
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(17.0))));
-
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Meu Perfil')),
       body: SingleChildScrollView(
@@ -71,13 +52,29 @@ class _MeuPerfilState extends State<MeuPerfil> {
               fieldPhone(),
               fieldDataNascimento(),
               fieldEmail(),
-              const SizedBox(height: 30.0),
-              btnSalvar
+              btnSalvar()
             ],
           ),
         ),
       )),
     );
+  }
+
+  btnSalvar() {
+    return Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: ElevatedButton(
+            onPressed: () async {
+              if (formKey.currentState!.validate()) {
+                editar();
+              }
+            },
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text("Salvar", style: TextStyle(fontSize: 20))),
+              Icon(Icons.check)
+            ])));
   }
 
   Widget fieldName() {
@@ -222,8 +219,7 @@ class _MeuPerfilState extends State<MeuPerfil> {
       usuario.telefone = telefone.text;
       usuario.email = email.text;
       usuario.photo = widget.usuario.photo;
-      usuario.dataNascimento =
-          DateFormat('dd/MM/yyyy').parse(dataNascimento.text);
+      usuario.dataNascimento = DateUltils.stringToDate(dataNascimento.text);
       await context.read<UserService>().atualizar(usuario);
       Navigator.pop(context);
     } on CustomException catch (e) {
@@ -287,15 +283,8 @@ class _MeuPerfilState extends State<MeuPerfil> {
     nome.text = widget.usuario.name ?? '';
     telefone.text = widget.usuario.telefone ?? '';
     senha.text = widget.usuario.senha ?? '';
-    dataNascimento.text = formatarData(widget.usuario.dataNascimento);
+    dataNascimento.text =
+        DateUltils.formatarData(widget.usuario.dataNascimento);
     email.text = widget.usuario.email ?? '';
-  }
-
-  formatarData(DateTime? data) {
-    if (data != null) {
-      return DateFormat('dd/MM/yyyy').format(data);
-    } else {
-      return "";
-    }
   }
 }

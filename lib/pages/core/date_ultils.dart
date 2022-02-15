@@ -13,4 +13,8 @@ class DateUltils {
   static onlyDate(DateTime data) {
     return DateTime(data.year, data.month, data.day);
   }
+
+  static DateTime stringToDate(String data) {
+    return DateFormat('dd-MM-yyyy').parse(data);
+  }
 }
