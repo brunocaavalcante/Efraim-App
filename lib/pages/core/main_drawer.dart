@@ -1,5 +1,6 @@
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/agenda/agenda_page.dart';
+import 'package:app_flutter/pages/escala/home_escala.dart';
 import 'package:app_flutter/pages/membros/index_membro_page.dart';
 import 'package:app_flutter/pages/projeto/index_projeto_page.dart';
 import 'package:app_flutter/pages/usuario/meu_perfil.dart';
@@ -90,6 +91,13 @@ class _MainDrawerState extends State<MainDrawer> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const AgendaPage()));
+              }),
+          ListTile(
+              leading: const Icon(Icons.list),
+              title: const Text("Escalas", style: TextStyle(fontSize: 18)),
+              onTap: () async {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeEscala()));
               }),
           ListTile(
               leading: const Icon(Icons.person_search),

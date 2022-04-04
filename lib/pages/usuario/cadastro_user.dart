@@ -1,5 +1,6 @@
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/core/custom_exception.dart';
+import 'package:app_flutter/pages/core/date_ultils.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -77,7 +78,9 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
         controller: telefone,
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(
-            labelText: 'Telefone:', hintText: '(99) 9 9999-9999'),
+            border: OutlineInputBorder(),
+            labelText: 'Telefone:',
+            hintText: '(99) 9 9999-9999'),
         validator: (value) {
           if (value!.isEmpty) {
             return "Campo obrigatório";
@@ -129,8 +132,7 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
       usuario.email = email.text;
       usuario.senha = senha.text;
       usuario.confirmSenha = confirmSenha.text;
-      usuario.dataNascimento =
-          DateFormat('dd/MM/yyyy').parse(dataNascimento.text);
+      usuario.dataNascimento = DateUltils.stringToDate(dataNascimento.text);
       await context.read<UserService>().registrar(usuario);
       Navigator.pop(context);
     } on CustomException catch (e) {
