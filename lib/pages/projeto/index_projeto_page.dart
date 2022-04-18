@@ -1,4 +1,5 @@
 import 'package:app_flutter/models/projeto.dart';
+import 'package:app_flutter/pages/core/widget_ultil.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/theme/app-colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -37,9 +38,7 @@ class _home_projeto_pageState extends State<IndexProjetoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Projetos"),
-      ),
+      appBar: WidgetUltil.barWithArrowBackIos(context, "Projetos"),
       body: lista(),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

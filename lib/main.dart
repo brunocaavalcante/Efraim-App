@@ -1,4 +1,5 @@
 import 'package:app_flutter/services/agenda_service.dart';
+import 'package:app_flutter/services/escala_service.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:app_flutter/theme/app_theme.dart';
@@ -15,7 +16,8 @@ void main() async {
     runApp(MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => UserService()),
       ChangeNotifierProvider(create: (context) => ProjetoService()),
-      ChangeNotifierProvider(create: (context) => AgendaService())
+      ChangeNotifierProvider(create: (context) => AgendaService()),
+      ChangeNotifierProvider(create: (context) => EscalaService())
     ], child: const MyApp()));
   });
 }
