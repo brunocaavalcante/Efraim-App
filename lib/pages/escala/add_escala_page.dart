@@ -158,24 +158,26 @@ class _AddEscalaPageState extends State<AddEscalaPage> {
   }
 
   salvarEscala() async {
-    var auth = context.read<UserService>().auth.currentUser;
-    var escala = widget.entity;
-    escala.data = DateUltils.stringToDate(data.text);
-    escala.dataCadastro = DateTime.now();
-    escala.usuarios = obterIdUsuariosSelecionados();
-    escala.responsavel = auth!.uid;
-    bool anySelected = escala.usuarios!.isNotEmpty;
-    try {
-      if (!anySelected) {
-        AlertService.showAlert(
-            "Alerta!", "Nenhum participante selecionado!", context);
-      } else {
-        await context.read<EscalaService>().salvar(escala);
-        Navigator.pop(context);
+    if (formKey.currentState!.validate()) {
+      var auth = context.read<UserService>().auth.currentUser;
+      var escala = widget.entity;
+      escala.data = DateUltils.stringToDate(data.text);
+      escala.dataCadastro = DateTime.now();
+      escala.usuarios = obterIdUsuariosSelecionados();
+      escala.responsavel = auth!.uid;
+      bool anySelected = escala.usuarios!.isNotEmpty;
+      try {
+        if (!anySelected) {
+          AlertService.showAlert(
+              "Alerta!", "Nenhum participante selecionado!", context);
+        } else {
+          await context.read<EscalaService>().salvar(escala);
+          Navigator.pop(context);
+        }
+      } on CustomException catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.message)));
       }
-    } on CustomException catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 
