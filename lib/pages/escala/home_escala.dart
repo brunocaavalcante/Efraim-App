@@ -1,17 +1,22 @@
+import 'package:app_flutter/models/escala.dart';
 import 'package:app_flutter/pages/core/widget_ultil.dart';
 import 'package:app_flutter/theme/app-colors.dart';
 import 'package:flutter/material.dart';
-
-import 'limpeza_page.dart';
+import 'index_escala_page.dart';
 
 class HomeEscala extends StatelessWidget {
   const HomeEscala({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    goToLimpezaPage() {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const LimpezaPage()));
+    goToPage(String page) {
+      var escala = Escala();
+      escala.setor = page;
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => IndexEscalaPage(escala: escala)));
     }
 
     return Scaffold(
@@ -22,7 +27,7 @@ class HomeEscala extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               child: Column(children: [
                 GestureDetector(
-                    onTap: () => goToLimpezaPage(),
+                    onTap: () => goToPage("Limpeza"),
                     child: itemMenu("Limpeza", Icons.clean_hands_sharp)),
                 itemMenu("Evagelismo", Icons.book)
               ])),
@@ -31,7 +36,9 @@ class HomeEscala extends StatelessWidget {
               height: MediaQuery.of(context).size.height,
               child: Column(children: [
                 itemMenu("Culto no lar", Icons.home),
-                itemMenu("Limpeza", Icons.clean_hands_sharp)
+                GestureDetector(
+                    onTap: () => goToPage("Jejum"),
+                    child: itemMenu("Jejum", Icons.auto_stories_sharp)),
               ]))
         ]));
   }

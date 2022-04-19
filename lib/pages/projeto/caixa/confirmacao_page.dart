@@ -4,6 +4,7 @@ import 'package:app_flutter/pages/core/date_ultils.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/pages/core/currency_input_formatter.dart';
 import 'package:flutter/material.dart';
+// ignore: implementation_imports
 import 'package:provider/src/provider.dart';
 
 class ConfirmacaoPage extends StatefulWidget {
@@ -75,7 +76,7 @@ class _ConfirmacaoPageState extends State<ConfirmacaoPage> {
               Navigator.pop(context);
             },
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Padding(
+              const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text("Confirmar", style: TextStyle(fontSize: 20))),
               Icon(Icons.check)

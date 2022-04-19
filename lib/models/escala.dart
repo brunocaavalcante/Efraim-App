@@ -5,7 +5,7 @@ class Escala {
   String? responsavel;
   DateTime? data;
   DateTime? dataCadastro;
-  List<String>? usuarios;
+  var usuarios;
   String? setor;
 
   Map<String, Object?> toJson() {
