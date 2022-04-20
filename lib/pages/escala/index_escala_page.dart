@@ -77,6 +77,7 @@ class _IndexEscalaPageState extends State<IndexEscalaPage> {
         .doc(widget.escala.setor)
         .collection(
             DateTime.now().month.toString() + DateTime.now().year.toString())
+        .orderBy('Data', descending: false)
         .snapshots();
 
     return StreamBuilder<QuerySnapshot>(
@@ -111,16 +112,7 @@ class _IndexEscalaPageState extends State<IndexEscalaPage> {
                           elevation: 5,
                           margin: const EdgeInsets.symmetric(horizontal: 15),
                           child: Column(children: [
-                            Container(
-                                alignment: Alignment.topRight,
-                                width: MediaQuery.of(context).size.width,
-                                margin:
-                                    const EdgeInsets.only(top: 10, right: 10),
-                                child: Text(DateUltils.formatarData(item.data),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.cinzaEscuro,
-                                        fontSize: 17))),
+                            retornaData(item.data),
                             retornaUsuariosEscalados(item.usuarios)
                           ])),
                       background: Container(
@@ -137,6 +129,27 @@ class _IndexEscalaPageState extends State<IndexEscalaPage> {
             }).toList(),
           );
         });
+  }
+
+  retornaData(DateTime? data) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Container(
+          alignment: Alignment.topRight,
+          margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
+          child: Text("Escalado(s): ",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.cinzaEscuro,
+                  fontSize: 17))),
+      Container(
+          alignment: Alignment.topRight,
+          margin: const EdgeInsets.only(top: 10, right: 10, bottom: 10),
+          child: Text(DateUltils.formatarData(data),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.cinzaEscuro,
+                  fontSize: 17)))
+    ]);
   }
 
   retornaUsuariosEscalados(lista) {

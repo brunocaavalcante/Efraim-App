@@ -31,6 +31,12 @@ class _AddEscalaPageState extends State<AddEscalaPage> {
   var participantes = <Usuario>[];
 
   @override
+  void initState() {
+    limparCheckUsuariosSelecionados();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: WidgetUltil.barWithArrowBackIos(context, "Adicionar Escala"),
@@ -189,5 +195,11 @@ class _AddEscalaPageState extends State<AddEscalaPage> {
       }
     }
     return lista;
+  }
+
+  limparCheckUsuariosSelecionados() {
+    for (var item in participantes) {
+      item.check = false;
+    }
   }
 }

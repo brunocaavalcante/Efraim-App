@@ -29,13 +29,13 @@ class HomeEscala extends StatelessWidget {
                 GestureDetector(
                     onTap: () => goToPage("Limpeza"),
                     child: itemMenu("Limpeza", Icons.clean_hands_sharp)),
-                itemMenu("Evagelismo", Icons.book)
+                //itemMenu("Evagelismo", Icons.book)
               ])),
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
               height: MediaQuery.of(context).size.height,
               child: Column(children: [
-                itemMenu("Culto no lar", Icons.home),
+                //itemMenu("Culto no lar", Icons.home),
                 GestureDetector(
                     onTap: () => goToPage("Jejum"),
                     child: itemMenu("Jejum", Icons.auto_stories_sharp)),
