@@ -48,6 +48,7 @@ dependencies:
   mask_text_input_formatter: ^2.0.0
   sliding_sheet: ^0.2.4
   table_calendar: ^3.0.3
+  font_awesome_flutter: "^10.1.0"
     
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

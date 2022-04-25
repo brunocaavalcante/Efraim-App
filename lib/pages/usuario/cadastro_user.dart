@@ -31,7 +31,8 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
 
   Widget fieldName() {
     return TextFormField(
-      decoration: const InputDecoration(labelText: 'Nome:'),
+      decoration: const InputDecoration(
+          labelText: 'Nome:', border: OutlineInputBorder()),
       controller: nome,
       validator: (value) {
         if (value!.isEmpty) {
@@ -44,7 +45,8 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
 
   Widget fieldEmail() {
     return TextFormField(
-        decoration: const InputDecoration(labelText: 'E-mail:'),
+        decoration: const InputDecoration(
+            labelText: 'E-mail:', border: OutlineInputBorder()),
         controller: email,
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
@@ -59,7 +61,9 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
     var mask = MaskTextInputFormatter(mask: '##/##/####');
     return TextFormField(
         decoration: const InputDecoration(
-            labelText: 'Data de Nascimento:', hintText: 'dd/mm/yyyy'),
+            labelText: 'Data de Nascimento:',
+            border: OutlineInputBorder(),
+            hintText: 'dd/mm/yyyy'),
         inputFormatters: [mask],
         controller: dataNascimento,
         keyboardType: TextInputType.datetime,
@@ -94,7 +98,8 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
         obscureText: true,
         controller: senha,
         keyboardType: TextInputType.number,
-        decoration: const InputDecoration(labelText: 'Senha:'),
+        decoration: const InputDecoration(
+            border: OutlineInputBorder(), labelText: 'Senha:'),
         validator: (value) {
           if (value!.isEmpty) {
             return "Campo obrigatório";
@@ -111,7 +116,8 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
         obscureText: true,
         controller: confirmSenha,
         keyboardType: TextInputType.number,
-        decoration: const InputDecoration(labelText: 'Confirmar senha:'),
+        decoration: const InputDecoration(
+            border: OutlineInputBorder(), labelText: 'Confirmar senha:'),
         validator: (value) {
           if (value!.isEmpty) {
             return "Campo obrigatório";
@@ -167,6 +173,7 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(17.0))));
 
+    double? espaco = 10;
     return Scaffold(
       appBar: AppBar(title: const Text('Cadastro de Usuário')),
       body: SingleChildScrollView(
@@ -176,13 +183,19 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
           key: formKey,
           child: Column(
             children: [
+              SizedBox(height: espaco),
               fieldName(),
+              SizedBox(height: espaco),
               fieldPhone(),
+              SizedBox(height: espaco),
               fieldDataNascimento(),
+              SizedBox(height: espaco),
               fieldEmail(),
+              SizedBox(height: espaco),
               fieldSenha(),
+              SizedBox(height: espaco),
               fieldConfirmSenha(),
-              const SizedBox(height: 30.0),
+              SizedBox(height: espaco),
               btnSalvar
             ],
           ),

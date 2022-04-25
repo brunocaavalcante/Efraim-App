@@ -1,9 +1,7 @@
-import 'package:app_flutter/models/caixa.dart';
 import 'package:app_flutter/models/opracao_caixa.dart';
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/projeto/caixa/confirmacao_page.dart';
-import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/pages/core/currency_input_formatter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -155,7 +153,7 @@ class _OperacaoPageState extends State<OperacaoPage> {
             padding: const EdgeInsets.all(24),
             child: TextFormField(
                 inputFormatters: [
-                  WhitelistingTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.digitsOnly,
                   CurrencyInputFormatter()
                 ],
                 controller: valor,

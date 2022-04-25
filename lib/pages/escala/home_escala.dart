@@ -1,8 +1,8 @@
 import 'package:app_flutter/models/escala.dart';
 import 'package:app_flutter/pages/core/widget_ultil.dart';
-import 'package:app_flutter/theme/app-colors.dart';
 import 'package:flutter/material.dart';
 import 'index_escala_page.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeEscala extends StatelessWidget {
   const HomeEscala({Key? key}) : super(key: key);
@@ -28,8 +28,12 @@ class HomeEscala extends StatelessWidget {
               child: Column(children: [
                 GestureDetector(
                     onTap: () => goToPage("Limpeza"),
-                    child: itemMenu("Limpeza", Icons.clean_hands_sharp)),
-                //itemMenu("Evagelismo", Icons.book)
+                    child: itemMenu(
+                        "Limpeza", FontAwesomeIcons.handsClapping, 50)),
+                GestureDetector(
+                    onTap: () => goToPage("Monte"),
+                    child: itemMenu(
+                        "Oração no Monte", FontAwesomeIcons.handsPraying, 50)),
               ])),
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
@@ -38,17 +42,17 @@ class HomeEscala extends StatelessWidget {
                 //itemMenu("Culto no lar", Icons.home),
                 GestureDetector(
                     onTap: () => goToPage("Jejum"),
-                    child: itemMenu("Jejum", Icons.auto_stories_sharp)),
+                    child: itemMenu("Jejum", FontAwesomeIcons.bookBible, 50)),
               ]))
         ]));
   }
 
-  itemMenu(String text, IconData itemIcon) {
+  itemMenu(String text, IconData itemIcon, double size) {
     return Container(
-        margin: const EdgeInsets.all(30),
+        margin: const EdgeInsets.all(20),
         child: Column(children: [
-          Icon(itemIcon, size: 80, color: AppColors.cinzaEscuro),
-          Text(text, style: const TextStyle(fontSize: 25))
+          FaIcon(itemIcon, size: size),
+          Text(text, style: const TextStyle(fontSize: 20))
         ]));
   }
 }

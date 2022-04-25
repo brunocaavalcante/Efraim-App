@@ -31,12 +31,6 @@ class _AddEscalaPageState extends State<AddEscalaPage> {
   var participantes = <Usuario>[];
 
   @override
-  void initState() {
-    limparCheckUsuariosSelecionados();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: WidgetUltil.barWithArrowBackIos(context, "Adicionar Escala"),
@@ -178,6 +172,7 @@ class _AddEscalaPageState extends State<AddEscalaPage> {
               "Alerta!", "Nenhum participante selecionado!", context);
         } else {
           await context.read<EscalaService>().salvar(escala);
+          limparCheckUsuariosSelecionados();
           Navigator.pop(context);
         }
       } on CustomException catch (e) {

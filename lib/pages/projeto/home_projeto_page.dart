@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:app_flutter/models/projeto.dart';
-import 'package:app_flutter/pages/projeto/index_projeto_page.dart';
 import 'package:app_flutter/services/file_service.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/theme/app-colors.dart';
