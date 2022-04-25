@@ -123,7 +123,7 @@ class _MainDrawerState extends State<MainDrawer> {
     return const SizedBox(
       width: 200,
       child: Text(
-        "Versão: 5.1 - 20/04/2022",
+        "Versão: 5.2.1 - 24/04/2022",
         style: TextStyle(fontSize: 14, color: Colors.grey),
       ),
     );
