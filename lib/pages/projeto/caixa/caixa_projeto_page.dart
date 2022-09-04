@@ -60,7 +60,7 @@ class _CaixaProjetoPageState extends State<CaixaProjetoPage> {
   }
 
   containerSaldo() {
-    var _caixaStream = FirebaseFirestore.instance
+    var caixaStream = FirebaseFirestore.instance
         .collection('projetos')
         .doc(widget.projeto.id)
         .collection("caixa")
@@ -68,15 +68,15 @@ class _CaixaProjetoPageState extends State<CaixaProjetoPage> {
         .snapshots();
 
     return StreamBuilder<DocumentSnapshot>(
-        stream: _caixaStream,
+        stream: caixaStream,
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text('Something went wrong');
+            return const Text('Something went wrong');
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+            return const Text("Loading");
           }
 
           Map<String, dynamic> data =
@@ -142,7 +142,7 @@ class _CaixaProjetoPageState extends State<CaixaProjetoPage> {
   }
 
   itemHistorico() {
-    Stream<QuerySnapshot> _participanteStream = FirebaseFirestore.instance
+    Stream<QuerySnapshot> participanteStream = FirebaseFirestore.instance
         .collection('projetos')
         .doc(widget.projeto.id)
         .collection("caixa")
@@ -152,7 +152,7 @@ class _CaixaProjetoPageState extends State<CaixaProjetoPage> {
         .snapshots();
 
     return StreamBuilder<QuerySnapshot>(
-        stream: _participanteStream,
+        stream: participanteStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('Erro!');

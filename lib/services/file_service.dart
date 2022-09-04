@@ -10,7 +10,7 @@ class FileService {
 
       return ref.putFile(file);
     } on FirebaseException catch (e) {
-      throw CustomException("Ocorreu um erro " + e.message.toString());
+      throw CustomException("Ocorreu um erro ${e.message}");
     }
   }
 
@@ -20,7 +20,7 @@ class FileService {
 
       return ref.putData(data);
     } on FirebaseException catch (e) {
-      throw CustomException("Ocorreu um erro " + e.message.toString());
+      throw CustomException("Ocorreu um erro ${e.message}");
     }
   }
 }

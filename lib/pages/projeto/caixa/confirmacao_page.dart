@@ -74,7 +74,7 @@ class _ConfirmacaoPageState extends State<ConfirmacaoPage> {
               Navigator.pop(context);
               Navigator.pop(context);
             },
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
               Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text("Confirmar", style: TextStyle(fontSize: 20))),

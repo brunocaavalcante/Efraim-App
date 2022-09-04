@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:app_flutter/models/projeto.dart';
-import 'package:app_flutter/pages/projeto/index_projeto_page.dart';
 import 'package:app_flutter/services/file_service.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/theme/app-colors.dart';
@@ -189,7 +188,7 @@ class _HomeProjetoState extends State<HomeProjetoPage> {
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.center,
-                  child: CircularProgressIndicator(strokeWidth: 10));
+                  child: const CircularProgressIndicator(strokeWidth: 10));
             } else {
               return Container();
             }

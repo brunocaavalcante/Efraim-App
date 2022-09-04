@@ -22,7 +22,7 @@ class _AgendaPageState extends State<AgendaPage> {
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
   FirebaseAuth auth = FirebaseAuth.instance;
-  TextEditingController _eventController = TextEditingController();
+  final TextEditingController _eventController = TextEditingController();
 
   @override
   void initState() {
@@ -95,7 +95,7 @@ class _AgendaPageState extends State<AgendaPage> {
   }
 
   bodyCalendar() {
-    Stream<QuerySnapshot> _eventoStream = FirebaseFirestore.instance
+    Stream<QuerySnapshot> eventoStream = FirebaseFirestore.instance
         .collection('agenda')
         .where('Ano', isEqualTo: selectedDay.year)
         .where('Mes', isEqualTo: selectedDay.month)
@@ -103,7 +103,7 @@ class _AgendaPageState extends State<AgendaPage> {
 
     return SingleChildScrollView(
       child: StreamBuilder(
-        stream: _eventoStream,
+        stream: eventoStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             snapshot.data.docs.forEach((item) {
@@ -136,16 +136,16 @@ class _AgendaPageState extends State<AgendaPage> {
                       firstDay: DateTime(1990),
                       lastDay: DateTime(2050),
                       eventLoader: _getEventsMonth,
-                      onDaySelected: (_selectedDay, _focusedDay) {
+                      onDaySelected: (selectedDay, focusedDay) {
                         setState(() {
-                          selectedDay = _selectedDay;
-                          focusedDay = _focusedDay;
+                          selectedDay = selectedDay;
+                          focusedDay = focusedDay;
                         });
                       },
-                      onPageChanged: (_focusedDay) {
+                      onPageChanged: (focusedDay) {
                         setState(() {
-                          selectedDay = _focusedDay;
-                          focusedDay = _focusedDay;
+                          selectedDay = focusedDay;
+                          focusedDay = focusedDay;
                         });
                       },
                       headerStyle: HeaderStyle(
@@ -204,16 +204,6 @@ class _AgendaPageState extends State<AgendaPage> {
                     await context.read<AgendaService>().excluirEvento(evento);
                     setState(() {});
                   },
-                  child: Card(
-                      elevation: 5,
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
-                      child: ListTile(
-                          trailing: const Icon(Icons.arrow_back_ios_new),
-                          subtitle: Text(
-                              DateFormat('EEEE, dd MMMM, yyyy', 'pt_BR')
-                                  .format(evento.dataEvento as DateTime)),
-                          title: Text(evento.descricao as String,
-                              textAlign: TextAlign.start))),
                   background: Container(
                       color: Colors.red,
                       margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -224,7 +214,17 @@ class _AgendaPageState extends State<AgendaPage> {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
-                                  fontWeight: FontWeight.bold))))));
+                                  fontWeight: FontWeight.bold)))),
+                  child: Card(
+                      elevation: 5,
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      child: ListTile(
+                          trailing: const Icon(Icons.arrow_back_ios_new),
+                          subtitle: Text(
+                              DateFormat('EEEE, dd MMMM, yyyy', 'pt_BR')
+                                  .format(evento.dataEvento as DateTime)),
+                          title: Text(evento.descricao as String,
+                              textAlign: TextAlign.start)))));
         });
   }
 

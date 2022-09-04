@@ -40,6 +40,13 @@ class _IndexMembroPageState extends State<IndexMembroPage> {
                     key: UniqueKey(),
                     direction: DismissDirection.endToStart,
                     onDismissed: (_) async {},
+                    background: Container(
+                        color: Colors.red,
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                            margin: const EdgeInsets.only(right: 20),
+                            child: const Text("Excluir", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)))),
                     child: Card(
                         elevation: 5,
                         margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -60,14 +67,7 @@ class _IndexMembroPageState extends State<IndexMembroPage> {
                                         fit: BoxFit.cover)),
                             subtitle: Text(participante.email),
                             title: Text(participante.name,
-                                textAlign: TextAlign.start))),
-                    background: Container(
-                        color: Colors.red,
-                        margin: const EdgeInsets.symmetric(horizontal: 15),
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                            margin: const EdgeInsets.only(right: 20),
-                            child: const Text("Excluir", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))))));
+                                textAlign: TextAlign.start)))));
           }).toList(),
         );
       },

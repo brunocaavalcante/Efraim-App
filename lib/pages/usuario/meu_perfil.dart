@@ -69,7 +69,7 @@ class _MeuPerfilState extends State<MeuPerfil> {
                 editar();
               }
             },
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
               Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text("Salvar", style: TextStyle(fontSize: 20))),
@@ -269,7 +269,7 @@ class _MeuPerfilState extends State<MeuPerfil> {
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.center,
-                  child: CircularProgressIndicator(strokeWidth: 10));
+                  child: const CircularProgressIndicator(strokeWidth: 10));
             } else {
               return Container();
             }

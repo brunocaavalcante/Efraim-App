@@ -121,8 +121,12 @@ class _TaskAddPageState extends State<TaskAddPage> {
               minWidth: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
               // ignore: deprecated_member_use
-              child: RaisedButton(
-                  color: const Color.fromRGBO(79, 88, 100, 1),
+              child: ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      adicionarTask();
+                    }
+                  },
                   child: const Text(
                     "Salvar",
                     style: TextStyle(
@@ -131,14 +135,7 @@ class _TaskAddPageState extends State<TaskAddPage> {
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
-                  ),
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      adicionarTask();
-                    }
-                  },
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(17.0)))),
+                  ))),
         ));
   }
 

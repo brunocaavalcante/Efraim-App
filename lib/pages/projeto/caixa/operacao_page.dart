@@ -1,9 +1,7 @@
-import 'package:app_flutter/models/caixa.dart';
 import 'package:app_flutter/models/opracao_caixa.dart';
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/projeto/caixa/confirmacao_page.dart';
-import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/pages/core/currency_input_formatter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -76,11 +74,11 @@ class _OperacaoPageState extends State<OperacaoPage> {
   }
 
   listaMembros() {
-    Stream<QuerySnapshot> _participanteStream =
+    Stream<QuerySnapshot> participanteStream =
         FirebaseFirestore.instance.collection('users').snapshots();
 
     return StreamBuilder<QuerySnapshot>(
-        stream: _participanteStream,
+        stream: participanteStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('Erro!');
@@ -140,7 +138,7 @@ class _OperacaoPageState extends State<OperacaoPage> {
                 });
               }
             },
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
               Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Text("Próximo", style: TextStyle(fontSize: 20))),
@@ -155,7 +153,7 @@ class _OperacaoPageState extends State<OperacaoPage> {
             padding: const EdgeInsets.all(24),
             child: TextFormField(
                 inputFormatters: [
-                  WhitelistingTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.digitsOnly,
                   CurrencyInputFormatter()
                 ],
                 controller: valor,

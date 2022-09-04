@@ -1,7 +1,6 @@
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/theme/app-colors.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
@@ -72,16 +71,14 @@ class _home_projeto_pageState extends State<IndexProjetoPage> {
     var projetos = await context.read<ProjetoService>().getProjetos();
     var lista = <Projeto>[];
 
-    if (projetos != null) {
-      for (var item in projetos.docs) {
-        Map<String, dynamic> data = item.data() as Map<String, dynamic>;
-        var projeto = Projeto().toEntity(data);
-        projeto.id = item.id;
+    for (var item in projetos.docs) {
+      Map<String, dynamic> data = item.data() as Map<String, dynamic>;
+      var projeto = Projeto().toEntity(data);
+      projeto.id = item.id;
 
-        if (await verificaSeProprietarioOuParticipante(
-            auth.currentUser!.uid, projeto)) {
-          lista.add(projeto);
-        }
+      if (await verificaSeProprietarioOuParticipante(
+          auth.currentUser!.uid, projeto)) {
+        lista.add(projeto);
       }
     }
 

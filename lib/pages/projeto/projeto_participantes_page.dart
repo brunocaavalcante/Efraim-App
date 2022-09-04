@@ -128,14 +128,14 @@ class _ParticipantePageState extends State<ParticipantePage> {
   }
 
   getParticipantes() {
-    Stream<QuerySnapshot> _participanteStream = FirebaseFirestore.instance
+    Stream<QuerySnapshot> participanteStream = FirebaseFirestore.instance
         .collection('projetos')
         .doc(widget.projeto.id)
         .collection("participantes")
         .snapshots();
 
     return StreamBuilder<QuerySnapshot>(
-        stream: _participanteStream,
+        stream: participanteStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Text('Erro!');
@@ -164,6 +164,14 @@ class _ParticipantePageState extends State<ParticipantePage> {
                             .excluirParticipanteProjeto(
                                 widget.projeto, participante);
                       },
+                      background: Container(
+                          color: Colors.red,
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                              margin: const EdgeInsets.only(right: 20),
+                              child: const Text("Excluir",
+                                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)))),
                       child: Card(
                           elevation: 5,
                           margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -182,15 +190,7 @@ class _ParticipantePageState extends State<ParticipantePage> {
                                           fit: BoxFit.cover)),
                               subtitle: Text(participante.email),
                               title: Text(participante.name,
-                                  textAlign: TextAlign.start))),
-                      background: Container(
-                          color: Colors.red,
-                          margin: const EdgeInsets.symmetric(horizontal: 15),
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                              margin: const EdgeInsets.only(right: 20),
-                              child: const Text("Excluir",
-                                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold))))));
+                                  textAlign: TextAlign.start)))));
             }).toList(),
           );
         });
