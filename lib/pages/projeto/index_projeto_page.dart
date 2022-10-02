@@ -6,6 +6,7 @@ import 'package:app_flutter/theme/app-colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
+import '../core/custom_exception.dart';
 import 'cadastro_projeto_page.dart';
 import 'datails_projeto_page.dart';
 
@@ -83,10 +84,6 @@ class _home_projeto_pageState extends State<IndexProjetoPage> {
           }
         }
       }
-    } on CustomException catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
-    }
     } on CustomException catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));
