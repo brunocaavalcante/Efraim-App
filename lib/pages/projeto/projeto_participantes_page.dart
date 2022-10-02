@@ -1,6 +1,6 @@
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/usuario.dart';
-import 'package:app_flutter/pages/core/alertService.dart';
+import 'package:app_flutter/pages/core/alert_service.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -1,5 +1,6 @@
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/core/custom_exception.dart';
+import 'package:app_flutter/pages/core/date_ultils.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +31,8 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
 
   Widget fieldName() {
     return TextFormField(
-      decoration: const InputDecoration(labelText: 'Nome:'),
+      decoration: const InputDecoration(
+          labelText: 'Nome:', border: OutlineInputBorder()),
       controller: nome,
       validator: (value) {
         if (value!.isEmpty) {
@@ -43,7 +45,8 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
 
   Widget fieldEmail() {
     return TextFormField(
-        decoration: const InputDecoration(labelText: 'E-mail:'),
+        decoration: const InputDecoration(
+            labelText: 'E-mail:', border: OutlineInputBorder()),
         controller: email,
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
@@ -58,7 +61,9 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
     var mask = MaskTextInputFormatter(mask: '##/##/####');
     return TextFormField(
         decoration: const InputDecoration(
-            labelText: 'Data de Nascimento:', hintText: 'dd/mm/yyyy'),
+            labelText: 'Data de Nascimento:',
+            border: OutlineInputBorder(),
+            hintText: 'dd/mm/yyyy'),
         inputFormatters: [mask],
         controller: dataNascimento,
         keyboardType: TextInputType.datetime,
@@ -77,7 +82,9 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
         controller: telefone,
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(
-            labelText: 'Telefone:', hintText: '(99) 9 9999-9999'),
+            border: OutlineInputBorder(),
+            labelText: 'Telefone:',
+            hintText: '(99) 9 9999-9999'),
         validator: (value) {
           if (value!.isEmpty) {
             return "Campo obrigatório";
@@ -91,7 +98,8 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
         obscureText: true,
         controller: senha,
         keyboardType: TextInputType.number,
-        decoration: const InputDecoration(labelText: 'Senha:'),
+        decoration: const InputDecoration(
+            border: OutlineInputBorder(), labelText: 'Senha:'),
         validator: (value) {
           if (value!.isEmpty) {
             return "Campo obrigatório";
@@ -108,7 +116,8 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
         obscureText: true,
         controller: confirmSenha,
         keyboardType: TextInputType.number,
-        decoration: const InputDecoration(labelText: 'Confirmar senha:'),
+        decoration: const InputDecoration(
+            border: OutlineInputBorder(), labelText: 'Confirmar senha:'),
         validator: (value) {
           if (value!.isEmpty) {
             return "Campo obrigatório";
@@ -129,8 +138,7 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
       usuario.email = email.text;
       usuario.senha = senha.text;
       usuario.confirmSenha = confirmSenha.text;
-      usuario.dataNascimento =
-          DateFormat('dd/MM/yyyy').parse(dataNascimento.text);
+      usuario.dataNascimento = DateUltils.stringToDate(dataNascimento.text);
       await context.read<UserService>().registrar(usuario);
       Navigator.pop(context);
     } on CustomException catch (e) {
@@ -161,6 +169,7 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
               textAlign: TextAlign.center,
             )));
 
+    double? espaco = 10;
     return Scaffold(
       appBar: AppBar(title: const Text('Cadastro de Usuário')),
       body: SingleChildScrollView(
@@ -170,13 +179,19 @@ class _CadastroUserPageState extends State<CadastroUserPage> {
           key: formKey,
           child: Column(
             children: [
+              SizedBox(height: espaco),
               fieldName(),
+              SizedBox(height: espaco),
               fieldPhone(),
+              SizedBox(height: espaco),
               fieldDataNascimento(),
+              SizedBox(height: espaco),
               fieldEmail(),
+              SizedBox(height: espaco),
               fieldSenha(),
+              SizedBox(height: espaco),
               fieldConfirmSenha(),
-              const SizedBox(height: 30.0),
+              SizedBox(height: espaco),
               btnSalvar
             ],
           ),

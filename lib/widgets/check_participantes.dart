@@ -1,5 +1,8 @@
 import 'package:app_flutter/models/usuario.dart';
+import 'package:app_flutter/services/firebase_messaging_service.dart';
+import 'package:app_flutter/services/notification_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CheckParticipante extends StatefulWidget {
   Usuario participante;

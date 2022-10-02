@@ -69,8 +69,7 @@ class _AgendaPageState extends State<AgendaPage> {
                 } else {
                   var evento = Evento();
                   evento.descricao = _eventController.text;
-                  evento.dataEvento =
-                      selectedDay.add(const Duration(hours: 12));
+                  evento.dataEvento = selectedDay.add(const Duration(hours: 2));
                   evento.dataCadastro = DateTime.now();
                   evento.responsavel = auth.currentUser!.displayName ?? '';
                   adicionarEvento(evento);

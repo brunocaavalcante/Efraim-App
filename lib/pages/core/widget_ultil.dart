@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppBarPadrao {
+class WidgetUltil {
   static retornaBackgroundFundo() {
     return Row(
       children: <Widget>[
@@ -32,5 +32,17 @@ class AppBarPadrao {
             border: Border.all(color: Colors.white, width: 6.0)),
       ),
     );
+  }
+
+  static barWithArrowBackIos(BuildContext context, String title) {
+    return AppBar(
+        title: Text(title),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context, true);
+          },
+          color: Colors.white,
+        ));
   }
 }

@@ -28,6 +28,10 @@ class UserService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<QuerySnapshot<Object?>> obterTodos() async {
+    return users.get();
+  }
+
   Future<Usuario> obterUsuarioPorId(String? id) async =>
       await users.doc(id).get().then((DocumentSnapshot documentSnapshot) {
         if (documentSnapshot.exists) {

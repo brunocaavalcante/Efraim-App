@@ -1,6 +1,7 @@
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/core/custom_exception.dart';
+import 'package:app_flutter/pages/core/date_ultils.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -101,8 +102,8 @@ class _CadastroProjetoPageState extends State<CadastroProjetoPage> {
       var projeto = Projeto();
       projeto.titulo = titulo.text;
       projeto.descricao = descricao.text;
-      projeto.dataInicio = DateFormat('dd/MM/yyyy').parse(dataInicio.text);
-      projeto.dataFinal = DateFormat('dd/MM/yyyy').parse(dataFim.text);
+      projeto.dataInicio = DateUltils.stringToDate(dataInicio.text);
+      projeto.dataFinal = DateUltils.stringToDate(dataFim.text);
       projeto.dataCadastro = DateTime.now();
       projeto.responsavel = Usuario();
       projeto.responsavel!.id = auth.currentUser!.uid;

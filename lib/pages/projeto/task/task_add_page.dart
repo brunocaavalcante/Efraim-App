@@ -1,7 +1,7 @@
 import 'package:app_flutter/models/projeto.dart';
 import 'package:app_flutter/models/task.dart';
 import 'package:app_flutter/models/usuario.dart';
-import 'package:app_flutter/pages/core/alertService.dart';
+import 'package:app_flutter/pages/core/alert_service.dart';
 import 'package:app_flutter/pages/core/custom_exception.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/theme/app-colors.dart';

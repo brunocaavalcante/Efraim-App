@@ -1,4 +1,7 @@
 import 'package:app_flutter/services/agenda_service.dart';
+import 'package:app_flutter/services/escala_service.dart';
+import 'package:app_flutter/services/firebase_messaging_service.dart';
+import 'package:app_flutter/services/notification_service.dart';
 import 'package:app_flutter/services/projetos_service.dart';
 import 'package:app_flutter/services/user_service.dart';
 import 'package:app_flutter/theme/app_theme.dart';
@@ -15,7 +18,12 @@ void main() async {
     runApp(MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => UserService()),
       ChangeNotifierProvider(create: (context) => ProjetoService()),
-      ChangeNotifierProvider(create: (context) => AgendaService())
+      ChangeNotifierProvider(create: (context) => AgendaService()),
+      ChangeNotifierProvider(create: (context) => EscalaService()),
+      ChangeNotifierProvider(create: (context) => NotificationService()),
+      ChangeNotifierProvider(
+          create: (context) =>
+              FirebaseMessagingService(context.read<NotificationService>())),
     ], child: const MyApp()));
   });
 }

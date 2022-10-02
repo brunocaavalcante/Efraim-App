@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 class DateUltils {
   static formatarData(DateTime? data) {
     if (data != null) {
-      var dataFormatada = DateFormat('dd-MM-yyyy').format(data);
+      var dataFormatada = DateFormat('dd/MM/yyyy').format(data);
       return dataFormatada;
     } else {
       return "";
@@ -15,6 +15,6 @@ class DateUltils {
   }
 
   static DateTime stringToDate(String data) {
-    return DateFormat('dd-MM-yyyy').parse(data);
+    return DateFormat('dd/MM/yyyy').parse(data);
   }
 }
