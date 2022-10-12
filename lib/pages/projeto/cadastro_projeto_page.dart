@@ -126,25 +126,7 @@ class _CadastroProjetoPageState extends State<CadastroProjetoPage> {
     final btnSalvar = ButtonTheme(
         minWidth: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        // ignore: deprecated_member_use
-        child: RaisedButton(
-            color: const Color.fromRGBO(79, 88, 100, 1),
-            child: const Text(
-              "Salvar",
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 16.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                cadastrarProjeto();
-              }
-            },
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(17.0))));
+        child: returnButton(Icons.save, "Salvar"));
 
     return Scaffold(
       appBar: AppBar(
@@ -167,6 +149,29 @@ class _CadastroProjetoPageState extends State<CadastroProjetoPage> {
           ),
         ),
       )),
+    );
+  }
+
+  returnButton(IconData ic, String text) {
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: ElevatedButton(
+        onPressed: () {
+          if (formKey.currentState!.validate()) {
+            cadastrarProjeto();
+          }
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(ic),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(text, style: const TextStyle(fontSize: 20)),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:app_flutter/models/usuario.dart';
 import 'package:app_flutter/pages/core/date_ultils.dart';
 
 class Evento {
